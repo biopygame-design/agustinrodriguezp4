@@ -1,0 +1,22 @@
+<p>homec works!</p>
+<section class="home-container">
+  <h2>🍭 Catálogo de candys</h2>
+
+  <app-searchbar [(termino)]="filtrobusqueda" />
+
+  @if (candysfiltrados().length > 0) {
+    <div class="movies-grid">
+      @for (candy of candysfiltrados(); track candy.id) {
+        <div class="pelicula-wrapper">
+          <app-candycard [candy]="candy" />
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="no-results">
+      <p>😔 No se encontraron candys para "{{ filtrobusqueda() }}"</p>
+    </div>
+  }
+
+  <router-outlet />
+</section>

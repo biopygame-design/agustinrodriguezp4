@@ -1,0 +1,8 @@
+<p>candydetails works!</p>
+@if (candy(); as c) {
+  <h1>{{ c.nombre }}</h1>
+  <img [src]="c.imagen" [alt]="c.nombre" style="max-width: 300px;">
+  
+} @else {
+  <p>No se encontró la película con el ID: {{ id() }}</p>
+}

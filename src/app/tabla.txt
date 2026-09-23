@@ -1,0 +1,20 @@
+CREATE TABLE public.favoritos ( id uuid DEFAULT gen_random_uuid() PRIMARY KEY, user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL, book_id text NOT NULL, book_title text NOT NULL, cover_url text, nota text DEFAULT '', created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL);
+
+
+ALTER TABLE public.favoritos ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Los usuarios pueden ver sus ... de Manuel Quintana Miño
+Manuel Quintana Miño
+8:19 a.m.
+CREATE POLICY "Los usuarios pueden ver sus propios favoritos" ON public.favoritos FOR SELECT USING (auth.uid() = user_id);
+ 
+CREATE POLICY "Los usuarios pueden insertar sus propios favoritos" ON public.favoritos FOR INSERT WITH CHECK (auth.uid() = user_id);
+ 
+CREATE POLICY "Los usuarios pueden actualizar sus propios favoritos" ON public.favoritos FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+ 
+CREATE POLICY "Los usuarios pueden eliminar sus propios favoritos" ON public.favoritos FOR DELETE USING (auth.uid() = user_id);
+tiene menú contextual
+
+
+
+
+Pass : Panchelo27@

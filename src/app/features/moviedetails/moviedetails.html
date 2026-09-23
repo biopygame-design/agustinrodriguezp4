@@ -1,0 +1,16 @@
+<p>moviedetails works!</p>
+<p>joya</p>
+<p>moviedetails works!</p>
+
+@if (pelicula(); as p) {
+  <h1>{{ p.nombre }}</h1>
+  <img [src]="p.portada" [alt]="p.nombre" style="max-width: 300px;">
+  <p><strong>Duración:</strong> {{ p.duracion }}</p>
+  <p><strong>Formato:</strong> {{ p.formato }}</p>
+  <p><strong>Idioma:</strong> {{ p.idioma }}</p>
+  <p><strong>Horarios:</strong> {{ p.horarios }}</p>
+} @else {
+  <p>No se encontró la película con el ID: {{ id() }}</p>
+}
+
+
