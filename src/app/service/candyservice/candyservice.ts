@@ -9,100 +9,115 @@ import { SupabaseService } from '../../core/service/supabaseservicie/supabaseser
   providedIn : 'root'
 })
 export class Candyservice {
-    private initialcandy : candyinterface [] = [
-        {
-          id:"1",
-          nombre:"coca-cola",
-          imagen : "https://ardiaprod.vtexassets.com/arquivos/ids/357998/Gaseosa-CocaCola-Sabor-Original-600-Ml-_2.jpg?v=638939019985070000"
-        }
-      ]
-   private candySignal = signal<candyinterface[]>(this.initialcandy);
-    cargando = signal(false);
-    candy = computed(() => this.candySignal());
-    Ssupabaseservice = inject(SupabaseService).client;
-    private destroyRef = inject(DestroyRef);
-  
-  
-    // Método para buscar por ID
-    getMovieById(id: string) {
-      return computed(() => this.candySignal().find(p => p.id === id));
+    private initialcandy: candyinterface[] = [
+    {
+      id: "1",
+      nombre: "coca-cola",
+      imagen: "https://ardiaprod.vtexassets.com/arquivos/ids/357998/Gaseosa-CocaCola-Sabor-Original-600-Ml-_2.jpg?v=638939019985070000",
+      precio: 5.00
     }
-  
-    private channel!: RealtimeChannel;
-  
-    constructor() {
-      // Al iniciar el servicio, cargamos los libros desde Supabase
-      this.cargarcandyDesdeDB();
-      // Nos suscribimos a cambios en tiempo real
-      this.channel = this.iniciarRealtime();
-  
-      // Limpiamos la suscripción cuando el servicio se destruye
-      this.destroyRef.onDestroy(() => {
-        this.Ssupabaseservice.removeChannel(this.channel);
-      });
-    }
-    
-  
-    private async cargarcandyDesdeDB(): Promise<void> {
-      this.cargando.set(true);
-  
-      const { data, error } = await this.Ssupabaseservice
-        .from('candy') // El nombre exacto de tu tabla en Supabase
-        .select('*')
-        .order('nombre', { ascending: true });
-  
-      if (error) {
-        console.error('❌ Error al cargar películas desde Supabase:', error.message);
-      } else {
-        // Guardamos los datos de Supabase en el signal (si data es null, guardamos un array vacío)
-        this.candySignal.set(data || []);
-        console.log(`✅ Se cargaron ${data?.length ?? 0} candys desde Supabase`);
-      }
-  
-      this.cargando.set(false);
-    }
-     private iniciarRealtime(): RealtimeChannel {
-      return this.Ssupabaseservice
-        .channel('candy-realtime')
-        .on('postgres_changes',
-          { event: '*', schema: 'public', table: 'candy' },
-          (payload) => {
-            console.log('🔄 Cambio en tiempo real:', payload.eventType, payload);
-  
-            switch (payload.eventType) {
-              // INSERT — un nuevo libro fue agregado por otro usuario
-              case 'INSERT':
-                this.candySignal.update(candy => [...candy, payload.new as candyinterface]);
-                break;
-  
-              // UPDATE — un libro fue modificado (ej: reserva que cambia el stock)
-              case 'UPDATE':
-                this.candySignal.update(candy =>
-                  candy.map(l => l.id === (payload.new as candyinterface).id
-                    ? payload.new as candyinterface
-                    : l
-                  )
-                );
-                break;
-  
-              // DELETE — un libro fue eliminado
-              case 'DELETE':
-                this.candySignal.update(candy =>
-                  candy.filter(l => l.id !== (payload.old as { id: string }).id)
-                );
-                break;
-            }
-          }
-        )
-        .subscribe();
-    }
-  
-    // Obtener un libro por ID — retorna un computed que se actualiza reactivamente
-    getLibroById(id: string) {
-      return computed(() => this.candySignal().find(libro => libro.id === id));
-    }
-  
-  
-  
+  ];
 
+  private candySignal = signal<candyinterface[]>(this.initialcandy);
+  cargando = signal(false);
+  candy = computed(() => this.candySignal());
+  
+  // Usamos el cliente directamente desde el servicio de Supabase
+  private supabaseClient = inject(SupabaseService).client;
+  private destroyRef = inject(DestroyRef);
+  private channel!: RealtimeChannel;
+
+  constructor() {
+    // Al iniciar el servicio, cargamos los candies desde Supabase
+    this.cargarcandyDesdeDB();
+    
+    // Nos suscribimos a cambios en tiempo real
+    this.channel = this.iniciarRealtime();
+
+    // Limpiamos la suscripción cuando el servicio se destruye
+    this.destroyRef.onDestroy(() => {
+      this.supabaseClient.removeChannel(this.channel);
+    });
+  }
+
+  // Cargar candies desde Supabase
+  private async cargarcandyDesdeDB(): Promise<void> {
+    this.cargando.set(true);
+
+    const { data, error } = await this.supabaseClient
+      .from('candy')
+      .select('*')
+      .order('nombre', { ascending: true });
+
+    if (error) {
+      console.error('❌ Error al cargar candys desde Supabase:', error.message);
+    } else {
+      this.candySignal.set(data || []);
+      console.log(`✅ Se cargaron ${data?.length ?? 0} candys desde Supabase`);
+    }
+
+    this.cargando.set(false);
+  }
+
+  // Sincronización en tiempo real con Supabase Realtime
+  private iniciarRealtime(): RealtimeChannel {
+    return this.supabaseClient
+      .channel('candy-realtime')
+      .on('postgres_changes',
+        { event: '*', schema: 'public', table: 'candy' },
+        (payload) => {
+          console.log('🔄 Cambio en tiempo real:', payload.eventType, payload);
+
+          switch (payload.eventType) {
+            case 'INSERT':
+              this.candySignal.update(candy => [...candy, payload.new as candyinterface]);
+              break;
+
+            case 'UPDATE':
+              this.candySignal.update(candy =>
+                candy.map(c => c.id === (payload.new as candyinterface).id
+                  ? payload.new as candyinterface
+                  : c
+                )
+              );
+              break;
+
+            case 'DELETE':
+              this.candySignal.update(candy =>
+                candy.filter(c => c.id !== (payload.old as { id: string }).id)
+              );
+              break;
+          }
+        }
+      )
+      .subscribe();
+  }
+
+  // Obtener un candy por ID — retorna un computed reactivo
+  getCandyById(id: string) {
+    return computed(() => this.candySignal().find(candy => candy.id === id));
+  }
+
+  // Método para agregar un nuevo candy a Supabase
+  async agregarCandy(producto: {
+    nombre: string;
+    precio: number;
+    imagen: string;
+  }): Promise<boolean> {
+    try {
+      const { error } = await this.supabaseClient
+        .from('candy')
+        .insert([producto]);
+
+      if (error) {
+        console.error('❌ Error al agregar candy en Supabase:', error.message);
+        return false;
+      }
+
+      return true;
+    } catch (err) {
+      console.error('❌ Error inesperado al guardar el candy:', err);
+      return false;
+    }
+  }
 }
