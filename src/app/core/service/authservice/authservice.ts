@@ -23,7 +23,6 @@ export class AuthService {
       this.currentUser.set(session?.user ?? null);
 
       if (session?.user) {
-        // Cargar los datos siempre que haya sesión y currentUserData aún no esté cargado
         if (!this.currentUserData() || this.currentUserData()?.id !== session.user.id) {
           await this.cargarDatosUsuario(session.user.id);
         }
@@ -47,7 +46,6 @@ export class AuthService {
     if (data) {
       this.currentUserData.set(data);
     } else {
-      // Fallback: Si no hay fila en la tabla 'usuarios', usamos metadata de Auth
       const metadata = this.currentUser()?.user_metadata;
       if (metadata) {
         this.currentUserData.set({
@@ -57,13 +55,13 @@ export class AuthService {
           tipo_de_sangre: metadata['tipo_de_sangre'] || '',
           dias_de_vacaciones_al_anio: metadata['dias_de_vacaciones_al_anio'] || '',
           color_de_ojos: metadata['color_de_ojos'] || '',
-          rol: metadata['rol'] || ''
+          rol: metadata['rol'] || '',
+          puntos: 0
         } as Userinterface);
       }
     }
   }
 
-  // Iniciar sesión y garantizar que se carguen los datos inmediatamente
   async signIn(email: string, password: string) {
     const response = await this.supabase.auth.signInWithPassword({ email, password });
     
@@ -84,7 +82,6 @@ export class AuthService {
     color_de_ojos: string,
     rol: string
   ) {
-    // 1. Crear el usuario en Supabase Auth
     const response = await this.supabase.auth.signUp({ 
       email, 
       password,
@@ -104,7 +101,6 @@ export class AuthService {
 
     const user = response.data.user;
 
-    // 2. Insertar la fila correspondiente en la tabla 'usuarios'
     if (user) {
       const { error: dbError } = await this.supabase.from('usuarios').insert({
         id: user.id,
@@ -114,13 +110,13 @@ export class AuthService {
         dias_de_vacaciones_al_anio,
         color_de_ojos,
         rol,
-        email
+        primera_compra_disponible: true,
+        puntos: 0
       });
 
       if (dbError) {
         console.error('Error al insertar en la tabla usuarios:', dbError.message);
       } else {
-        // Cargar los datos inmediatamente al crearse
         await this.cargarDatosUsuario(user.id);
       }
     }
@@ -134,5 +130,156 @@ export class AuthService {
     this.currentSession.set(null);
     this.currentUserData.set(null);
     return res;
+  }
+
+  get tieneDescuentoPrimeraCompra(): boolean {
+    const data = this.currentUserData();
+    return data ? (data.primera_compra_disponible ?? true) : false;
+  }
+
+  async usarCuponPrimeraCompra() {
+    const user = this.currentUser();
+    if (!user) return;
+
+    const { error } = await this.supabase
+      .from('usuarios')
+      .update({ primera_compra_disponible: false })
+      .eq('id', user.id);
+
+    if (!error) {
+      const current = this.currentUserData();
+      if (current) {
+        this.currentUserData.set({ ...current, primera_compra_disponible: false });
+      }
+    } else {
+      console.error('Error al actualizar el estado del cupón:', error.message);
+    }
+  }
+
+  async sumarPuntos(puntosGanados: number) {
+    try {
+      const user = this.currentUser();
+      if (!user) return;
+
+      const { data: usuario, error: errorFetch } = await this.supabase
+        .from('usuarios')
+        .select('puntos')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (errorFetch) throw errorFetch;
+
+      let totalFinal = puntosGanados;
+
+      if (!usuario) {
+        // Inserción sin incluir la propiedad 'email'
+        const { error: errorInsert } = await this.supabase
+          .from('usuarios')
+          .insert({
+            id: user.id,
+            puntos: puntosGanados,
+            primera_compra_disponible: false
+          });
+
+        if (errorInsert) throw errorInsert;
+      } else {
+        const puntosActuales = usuario.puntos || 0;
+        totalFinal = puntosActuales + puntosGanados;
+
+        const { error: errorUpdate } = await this.supabase
+          .from('usuarios')
+          .update({ puntos: totalFinal })
+          .eq('id', user.id);
+
+        if (errorUpdate) throw errorUpdate;
+      }
+
+      const current = this.currentUserData();
+      if (current) {
+        this.currentUserData.set({ ...current, puntos: totalFinal });
+      }
+
+      console.log(`⭐ ¡Se sumaron ${puntosGanados} puntos! Total acumulado: ${totalFinal}`);
+    } catch (error: any) {
+      console.error('❌ Error al sumar puntos:', error.message || error);
+    }
+  }
+  async actualizarPuntosUsuario(nuevosPuntos: number) {
+    try {
+      const user = this.currentUser();
+      if (!user) return;
+
+      // Aseguramos que los puntos nunca sean negativos
+      const totalFinal = Math.max(0, nuevosPuntos);
+
+      const { error: errorUpdate } = await this.supabase
+        .from('usuarios')
+        .update({ puntos: totalFinal })
+        .eq('id', user.id);
+
+      if (errorUpdate) throw errorUpdate;
+
+      const current = this.currentUserData();
+      if (current) {
+        this.currentUserData.set({ ...current, puntos: totalFinal });
+      }
+
+      console.log(`✨ Puntos actualizados correctamente. Nuevo saldo: ${totalFinal}`);
+    } catch (error: any) {
+      console.error('❌ Error al actualizar los puntos:', error.message || error);
+    }
+  }
+  // Sumar crédito tras cancelar una compra
+  async sumarCredito(montoACancelar: number) {
+    try {
+      const user = this.currentUser();
+      if (!user) return;
+
+      const usuarioActual = this.currentUserData();
+      const creditoActual = usuarioActual?.credito || 0;
+      const nuevoCredito = creditoActual + montoACancelar;
+
+      const { error } = await this.supabase
+        .from('usuarios')
+        .update({ credito: nuevoCredito })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      if (usuarioActual) {
+        this.currentUserData.set({ ...usuarioActual, credito: nuevoCredito });
+      }
+
+      console.log(`💰 Crédito actualizado. Nuevo saldo a favor: $${nuevoCredito}`);
+    } catch (error: any) {
+      console.error('❌ Error al sumar crédito:', error.message);
+    }
+  }
+
+  // Gastar crédito al pagar una compra
+  async gastarCredito(montoAGastar: number): Promise<boolean> {
+    try {
+      const user = this.currentUser();
+      const usuarioActual = this.currentUserData();
+      if (!user || !usuarioActual) return false;
+
+      const creditoActual = usuarioActual.credito || 0;
+      if (creditoActual < montoAGastar) return false;
+
+      const nuevoCredito = creditoActual - montoAGastar;
+
+      const { error } = await this.supabase
+        .from('usuarios')
+        .update({ credito: nuevoCredito })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      this.currentUserData.set({ ...usuarioActual, credito: nuevoCredito });
+      return true;
+    } catch (error: any) {
+      console.error('❌ Error al gastar crédito:', error.message);
+      return false;
+    }
   }
 }

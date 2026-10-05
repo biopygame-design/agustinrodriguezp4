@@ -2,6 +2,7 @@ import { Component,inject,signal,computed, Injectable,DestroyRef } from '@angula
 import { movieinterface } from '../../models/movieinterface/movieinterface';
 import { SupabaseService } from '../supabaseservicie/supabaseservice';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { DatePipe } from '@angular/common';
    
 @Injectable({providedIn: 'root'})
 export class Movieservicie {
@@ -15,7 +16,12 @@ export class Movieservicie {
       idioma : "ingles",
       subtitulos : "español",
       portada : "https://upload.wikimedia.org/wikipedia/en/7/70/Freddy%27s_Dead_Poster.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
-      horarios : []
+      horarios : [],
+      precio : 10.00,
+      clasificacion : "+18",
+      fecha_estreno : "2026-10-06",
+      es_preventa : false,
+      precio_preventa : 7.00
     }
   ]
   private peliculasSignal = signal<movieinterface[]>(this.initialpeliculas);
@@ -24,8 +30,35 @@ export class Movieservicie {
   Ssupabaseservice = inject(SupabaseService).client;
   private destroyRef = inject(DestroyRef);
 
+  async obtenerPeliculasPorGenero(genero: string) {
+    if (genero === 'todos') {
+      return await this.obtenerTodasLasPeliculas();
+    }
+    
+    const { data, error } = await this.Ssupabaseservice
+      .from('peliculas')
+      .select('*')
+      .eq('genero', genero);
 
-  // Método para buscar por ID
+    if (error) {
+      console.error('Error al filtrar películas:', error);
+      return [];
+    }
+    return data;
+  }
+
+  async obtenerTodasLasPeliculas() {
+    const { data, error } = await this.Ssupabaseservice
+      .from('peliculas')
+      .select('*');
+    
+    if (error) {
+      console.error('Error al obtener todas las películas:', error);
+      return [];
+    }
+    return data || [];
+  }
+
   getMovieById(id: string) {
     return computed(() => this.peliculasSignal().find(p => p.id === id));
   }
@@ -33,51 +66,47 @@ export class Movieservicie {
   private channel!: RealtimeChannel;
 
   constructor() {
-    // Al iniciar el servicio, cargamos los libros desde Supabase
     this.cargarPeliculasDesdeDB();
-    // Nos suscribimos a cambios en tiempo real
     this.channel = this.iniciarRealtime();
 
-    // Limpiamos la suscripción cuando el servicio se destruye
     this.destroyRef.onDestroy(() => {
       this.Ssupabaseservice.removeChannel(this.channel);
     });
   }
-  
 
   private async cargarPeliculasDesdeDB(): Promise<void> {
     this.cargando.set(true);
 
+    // 💡 Quitamos el filtro .eq('es_preventa', false) para que traiga TODAS las películas 
+    // (tanto las normales como las que están en preventa)
     const { data, error } = await this.Ssupabaseservice
-      .from('peliculas') // El nombre exacto de tu tabla en Supabase
+      .from('peliculas')
       .select('*')
       .order('nombre', { ascending: true });
 
     if (error) {
       console.error('❌ Error al cargar películas desde Supabase:', error.message);
     } else {
-      // Guardamos los datos de Supabase en el signal (si data es null, guardamos un array vacío)
       this.peliculasSignal.set(data || []);
       console.log(`✅ Se cargaron ${data?.length ?? 0} películas desde Supabase`);
     }
 
     this.cargando.set(false);
   }
-   private iniciarRealtime(): RealtimeChannel {
+
+  private iniciarRealtime(): RealtimeChannel {
     return this.Ssupabaseservice
-      .channel('libros-realtime')
+      .channel('peliculas-realtime')
       .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'libros' },
+        { event: '*', schema: 'public', table: 'peliculas' }, // 💡 Cambiado de 'libros' a 'peliculas'
         (payload) => {
           console.log('🔄 Cambio en tiempo real:', payload.eventType, payload);
 
           switch (payload.eventType) {
-            // INSERT — un nuevo libro fue agregado por otro usuario
             case 'INSERT':
               this.peliculasSignal.update(pelicula => [...pelicula, payload.new as movieinterface]);
               break;
 
-            // UPDATE — un libro fue modificado (ej: reserva que cambia el stock)
             case 'UPDATE':
               this.peliculasSignal.update(pelicula =>
                 pelicula.map(l => l.id === (payload.new as movieinterface).id
@@ -87,7 +116,6 @@ export class Movieservicie {
               );
               break;
 
-            // DELETE — un libro fue eliminado
             case 'DELETE':
               this.peliculasSignal.update(pelicula =>
                 pelicula.filter(l => l.id !== (payload.old as { id: string }).id)
@@ -99,9 +127,53 @@ export class Movieservicie {
       .subscribe();
   }
 
-  // Obtener un libro por ID — retorna un computed que se actualiza reactivamente
   getLibroById(id: string) {
     return computed(() => this.peliculasSignal().find(libro => libro.id === id));
   }
+  
+  async agregarPelicula(pelicula: Omit<movieinterface, 'id'>): Promise<boolean> {
+    const { error } = await this.Ssupabaseservice
+      .from('peliculas')
+      .insert([pelicula]);
 
+    if (error) {
+      console.error('❌ Error al agregar película:', error.message);
+      return false;
+    }
+
+    console.log(`🎬 Nueva película agregada correctamente`);
+    return true;
+  }
+
+  async obtenerFuncionesPorPelicula(peliculaId: string | number) {
+    const idString = String(peliculaId).trim();
+
+    const { data, error } = await this.Ssupabaseservice
+      .from('funciones')
+      .select('*')
+      .eq('pelicula_id', idString);
+
+    if (error) {
+      console.error('Error al obtener funciones:', error);
+      return [];
+    }
+    return data || [];
+  }
+
+  async obtenerPeliculasProximas() {
+    const hoy = new Date().toISOString().split('T')[0];
+    
+    const { data, error } = await this.Ssupabaseservice
+      .from('peliculas')
+      .select('*')
+      .gt('fecha_estreno', hoy)
+      .order('fecha_estreno', { ascending: true });
+
+    if (error) {
+      console.error('❌ Error al cargar próximos estrenos:', error.message);
+      return [];
+    }
+    
+    return data || [];
+  }
 }

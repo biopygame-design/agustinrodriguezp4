@@ -3,10 +3,14 @@ export interface Userinterface {
   mail : string,
   nombre : string,
   apellido : string,
+  edad: number,
   tipo_de_sangre : string,
   color_de_ojos : string,
   dias_de_vacaciones_al_anio : string,
   password : string,
   id : string,
-  rol : string
+  rol : string,
+  primera_compra_disponible?: boolean;
+  puntos : number,
+  credito?: number
 }

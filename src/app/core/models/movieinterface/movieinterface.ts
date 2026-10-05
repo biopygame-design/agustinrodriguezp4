@@ -7,5 +7,10 @@ export interface movieinterface{
   idioma : string,
   subtitulos : string,
   portada: string,
-  horarios : string[]
+  horarios : string[],
+  precio : number,
+  clasificacion :  string,
+  fecha_estreno : string,
+  es_preventa : boolean,
+  precio_preventa : number
 }
