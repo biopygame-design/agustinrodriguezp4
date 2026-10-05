@@ -27,6 +27,18 @@
       <p>😔 No se encontraron películas para "{{ filtrobusqueda() }}"</p>
     </div>
   }
+  <!-- Botones de filtro por género -->
+<div class="d-flex gap-2 my-3">
+  @for (genero of generosDisponibles; track genero) {
+    <button 
+      class="btn btn-sm"
+      [class.btn-primary]="generoSeleccionado() === genero"
+      [class.btn-outline-secondary]="generoSeleccionado() !== genero"
+      (click)="cambiarGenero(genero)">
+      {{ genero | titlecase }}
+    </button>
+  }
+</div>
 
   <router-outlet />
 </section>

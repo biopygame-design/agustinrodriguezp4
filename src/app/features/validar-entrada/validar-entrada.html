@@ -1,0 +1,18 @@
+<div class="validar-container">
+  <h2>Validación de Entradas - Boletería</h2>
+  
+  <div class="input-group">
+    <input 
+      type="text" 
+      [(ngModel)]="codigoIngresado" 
+      placeholder="Ingrese o escanee el código (Ej: CINE-UTN-123456)"
+      (keyup.enter)="validar()"
+    />
+    <button (click)="validar()">Validar</button>
+  </div>
+
+  <!-- Mensaje de respuesta condicional -->
+  <div *ngIf="mensajeResultado" class="mensaje" [class.exito]="esExito" [class.error]="!esExito">
+    <p>{{ mensajeResultado }}</p>
+  </div>
+</div>

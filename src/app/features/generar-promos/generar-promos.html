@@ -1,0 +1,49 @@
+`
+    <div class="container py-4">
+      <h2>Panel de Administración - Crear Promos 🛠️</h2>
+      
+      <form (ngSubmit)="guardarPromo()" class="card p-4 shadow-sm mt-3">
+        <div class="mb-3">
+          <label class="form-label">Título de la Promo</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevaPromo.titulo" name="titulo" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-control" [(ngModel)]="nuevaPromo.descripcion" name="descripcion"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Tipo de Promo</label>
+          <select class="form-select" [(ngModel)]="nuevaPromo.tipo" name="tipo">
+            <option value="puntos">Canjeable por Puntos</option>
+            <option value="edad">Especial por Edad (Jubilados / Menores)</option>
+          </select>
+        </div>
+
+        <!-- Campos dinámicos según el tipo -->
+        <div class="mb-3" *ngIf="nuevaPromo.tipo === 'puntos'">
+          <label class="form-label">Puntos Necesarios</label>
+          <input type="number" class="form-control" [(ngModel)]="nuevaPromo.puntos_necesarios" name="puntos">
+        </div>
+
+        <div class="row" *ngIf="nuevaPromo.tipo === 'edad'">
+          <div class="col md-6 mb-3">
+            <label class="form-label">Edad Mínima</label>
+            <input type="number" class="form-control" [(ngModel)]="nuevaPromo.edad_minima" name="edadMin">
+          </div>
+          <div class="col md-6 mb-3">
+            <label class="form-label">Edad Máxima</label>
+            <input type="number" class="form-control" [(ngModel)]="nuevaPromo.edad_maxima" name="edadMax">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">% de Descuento (Opcional)</label>
+          <input type="number" class="form-control" [(ngModel)]="nuevaPromo.descuento_porcentaje" name="descuento">
+        </div>
+
+        <button type="submit" class="btn btn-success">Publicar Promo</button>
+      </form>
+    </div>
+  `

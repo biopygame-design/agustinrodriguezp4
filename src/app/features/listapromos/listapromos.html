@@ -1,0 +1,21 @@
+<div class="promos-container">
+      <h2>Promociones y Canjes Disponibles</h2>
+      
+      <div *ngIf="promos().length === 0" class="no-promos">
+        <p>No hay promociones activas en este momento.</p>
+      </div>
+
+      <div class="grid-promos">
+        <div *ngFor="let promo of promos()" class="promo-card">
+          <h3>{{ promo.titulo }}</h3>
+          <p>{{ promo.descripcion }}</p>
+          <div class="info-promo">
+            <span *ngIf="promo.tipo === 'puntos'">⭐ Puntos necesarios: {{ promo.puntos_necesarios }}</span>
+            <span *ngIf="promo.tipo === 'descuento'">🔥 Descuento: {{ promo.descuento_porcentaje }}%</span>
+          </div>
+          <button (click)="canjearPromo(promo)" class="btn-canjear">
+            Canjear Promo
+          </button>
+        </div>
+      </div>
+    </div>

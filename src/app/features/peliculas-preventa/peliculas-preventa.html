@@ -1,0 +1,23 @@
+<div class="preventa-container">
+  <h2>🚀 Próximos Estrenos en Preventa</h2>
+
+  @if (listapreventas().length > 0) {
+    <div class="preventa-grid">
+      @for (pelicula of listapreventas(); track pelicula.id) {
+        <div class="preventa-card">
+          <img [src]="pelicula.portada" [alt]="pelicula.nombre" />
+          <h3>{{ pelicula.nombre | uppercase }}</h3>
+          <p>Estreno: {{ pelicula.fecha_estreno | date:'dd/MM/yyyy' }}</p>
+          <p class="precio">
+            Precio Preventa: <strong>${{ pelicula.precio_preventa ?? pelicula.precio }}</strong>
+          </p>
+          <button (click)="agregarPreventaAlCarrito(pelicula)">
+            Comprar Preventa
+          </button>
+        </div>
+      }
+    </div>
+  } @else {
+    <p>No hay películas en preventa por el momento.</p>
+  }
+</div>

@@ -22,7 +22,8 @@ export class Register {
     tipo_de_sangre: ['', [Validators.required, Validators.minLength(1)]],
     dias_de_vacaciones_al_anio: ['', [Validators.required]],
     color_de_ojos: ['', [Validators.required, Validators.minLength(3)]],
-    rol: ['', [Validators.required]]
+    rol: ['', [Validators.required]],
+    edad : [0,[Validators.required]]
   });
 
   isLoading = signal(false);

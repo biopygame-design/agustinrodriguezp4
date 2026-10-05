@@ -1,0 +1,76 @@
+<div class="cart-container">
+  <h2>🛒 Tu Carrito de Compras</h2>
+
+  @if (cartService.items().length === 0) {
+    <div class="empty-cart">
+      <p>Tu carrito está vacío.</p>
+      <a href="/inicio">Explorar películas</a>
+    </div>
+  } @else {
+    <div class="cart-list">
+      @for (item of cartService.items(); track item.id) {
+        <div class="cart-item-card">
+          <div class="item-info">
+            <h3>{{ item.titulo }}</h3>
+            <p class="tipo">{{ item.tipo | uppercase }}</p>
+            @if (item.detalles?.horario) {
+              <p>Horario: {{ item.detalles.horario }}</p>
+            }
+            <span class="precio">${{ item.precio }} x {{ item.cantidad }}</span>
+          </div>
+          <div class="item-actions">
+            <button (click)="cartService.eliminarItem(item.id)" class="btn-delete">❌ Eliminar</button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="cart-summary">
+      <h3>Resumen de Compra</h3>
+      <p>Total de productos: <strong>{{ cartService.cantidadTotal() }}</strong></p>
+      
+      <!-- Subtotal y Descuento integrado -->
+      <p>Subtotal: $ {{ cartService.precioTotal() }}</p>
+
+      @if (cartService.promoAplicada(); as promo) {
+        <div class="alert alert-success">
+          🔥 Descuento aplicado: {{ promo.titulo }} (-{{ promo.descuento_porcentaje }}%)
+          <button class="btn btn-sm btn-danger ms-2" (click)="cartService.quitarPromo()">Quitar</button>
+        </div>
+        <p>Descuento: - $ {{ cartService.montoDescuento() }}</p>
+      }
+
+      <!-- 🟢 OPCIÓN DE CRÉDITO A FAVOR (Usando la propiedad segura) -->
+      @if (tieneCredito()) {
+        <div class="card-credito" style="margin: 15px 0; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+          <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; color: #334155;">
+            <input type="checkbox" [checked]="usarCredito()" (change)="usarCredito.set(!usarCredito())" />
+            Usar mi crédito disponible (Tenés <strong>${{ creditoDisponible() }}</strong>)
+          </label>
+          
+          @if (usarCredito()) {
+            <p style="color: #16a34a; font-size: 13px; margin-top: 6px; margin-bottom: 0;">
+              Se descontarán <strong>${{ creditoAUsar() }}</strong> con tu crédito.
+            </p>
+          }
+        </div>
+      }
+
+      <hr>
+
+      <!-- Totales ajustados si usa crédito -->
+      @if (usarCredito()) {
+        <p style="font-size: 14px; color: #64748b;">Descuento por crédito: - ${{ creditoAUsar() }}</p>
+        <p class="total-price">Total a Pagar: <strong>${{ totalConCredito() }}</strong></p>
+      } @else {
+        <p class="total-price">Total a Pagar: <strong>${{ cartService.precioFinal() }}</strong></p>
+      }
+
+      <!-- Botones de acción -->
+      <button (click)="finalizarCompra()" class="btn-checkout">
+        Confirmar y Pagar
+      </button>
+      <button (click)="cartService.vaciarCarrito()" class="btn-clear">Vaciar Carrito</button>
+    </div>
+  }
+</div>

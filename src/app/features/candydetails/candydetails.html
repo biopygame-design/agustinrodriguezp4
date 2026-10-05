@@ -1,8 +1,12 @@
-<p>candydetails works!</p>
-@if (candy(); as c) {
-  <h1>{{ c.nombre }}</h1>
-  <img [src]="c.imagen" [alt]="c.nombre" style="max-width: 300px;">
-  
+@if (candy(); as item) {
+  <div class="detail-container">
+    <img [src]="item.imagen" [alt]="item.nombre" />
+    <div class="info">
+      <h2>{{ item.nombre | uppercase }}</h2>
+      <p class="precio">Precio: ${{ item.precio }}</p>
+      <button (click)="agregarAlCarrito()">Comprar / Agregar al Carrito</button>
+    </div>
+  </div>
 } @else {
-  <p>No se encontró la película con el ID: {{ id() }}</p>
+  <p>Cargando producto o no encontrado...</p>
 }
