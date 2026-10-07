@@ -17,31 +17,21 @@
 
   <div class="lista-entradas">
     <div *ngFor="let entrada of entradas()" class="entrada-card">
-<<<<<<< HEAD
       
       <!-- 🎬 Usamos la función auxiliar, evitando errores de TypeScript -->
       <p class="text-lg font-bold text-blue-400">
         Película: {{ getNombrePelicula(entrada) }}
       </p>
 
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       <p><strong>Código de Reserva:</strong> {{ entrada.codigo_qr }}</p>
       <p><strong>Asientos:</strong> {{ entrada.asientos }}</p>
       <p><strong>Total pagado:</strong> ${{ entrada.total }}</p>
       <p><strong>Estado:</strong> {{ entrada.estado || 'valida' }}</p>
       
-<<<<<<< HEAD
       <!-- 🟢 El botón desaparece si ya está usada O si fue cancelada -->
       <button 
         class="btn-cancelar" 
         *ngIf="entrada.estado !== 'usada' && entrada.estado !== 'cancelada'" 
-=======
-      <!-- 🟢 El botón solo aparece si el estado NO es 'usada' -->
-      <button 
-        class="btn-cancelar" 
-        *ngIf="entrada.estado !== 'usada'" 
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         (click)="cancelarEntrada(entrada)">
         Cancelar Entrada (Obtener Crédito)
       </button>

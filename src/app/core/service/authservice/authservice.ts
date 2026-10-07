@@ -17,7 +17,6 @@ export class AuthService {
     this.initAuthSession();
   }
 
-<<<<<<< HEAD
   private async initAuthSession() {
     // 1. Obtenemos la sesión actual de inmediato al arrancar la app
     const { data: { session } } = await this.supabase.auth.getSession();
@@ -30,18 +29,12 @@ export class AuthService {
     }
 
     // 2. Escuchamos los cambios futuros (login, logout, token refresh, etc.)
-=======
-  private initAuthSession() {
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     this.supabase.auth.onAuthStateChange(async (event, session) => {
       this.currentSession.set(session);
       this.currentUser.set(session?.user ?? null);
 
       if (session?.user) {
-<<<<<<< HEAD
         // Solo recargamos si cambió el usuario o si por algún motivo los datos quedaron en null
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         if (!this.currentUserData() || this.currentUserData()?.id !== session.user.id) {
           await this.cargarDatosUsuario(session.user.id);
         }
@@ -62,7 +55,6 @@ export class AuthService {
       console.error('Error al cargar datos del usuario:', error.message);
     }
 
-<<<<<<< HEAD
     // Obtenemos los metadatos de la sesión actual de Supabase como respaldo seguro
     const currentUser = this.currentUser();
     const metadata = currentUser?.user_metadata || {};
@@ -88,27 +80,6 @@ export class AuthService {
     // Seteamos el Signal con el objeto completo y sanitizado
     this.currentUserData.set(usuarioCombinado);
   }
-=======
-    if (data) {
-      this.currentUserData.set(data);
-    } else {
-      const metadata = this.currentUser()?.user_metadata;
-      if (metadata) {
-        this.currentUserData.set({
-          id: userId,
-          nombre: metadata['nombre'] || '',
-          apellido: metadata['apellido'] || '',
-          tipo_de_sangre: metadata['tipo_de_sangre'] || '',
-          dias_de_vacaciones_al_anio: metadata['dias_de_vacaciones_al_anio'] || '',
-          color_de_ojos: metadata['color_de_ojos'] || '',
-          rol: metadata['rol'] || '',
-          puntos: 0
-        } as Userinterface);
-      }
-    }
-  }
-
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   async signIn(email: string, password: string) {
     const response = await this.supabase.auth.signInWithPassword({ email, password });
     
@@ -127,12 +98,8 @@ export class AuthService {
     tipo_de_sangre: string, 
     dias_de_vacaciones_al_anio: string, 
     color_de_ojos: string,
-<<<<<<< HEAD
     rol: string,
     fecha_nacimiento: string
-=======
-    rol: string
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   ) {
     const response = await this.supabase.auth.signUp({ 
       email, 
@@ -144,12 +111,8 @@ export class AuthService {
           tipo_de_sangre,
           dias_de_vacaciones_al_anio,
           color_de_ojos,
-<<<<<<< HEAD
           rol,
           fecha_nacimiento
-=======
-          rol
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         }
       }
     });
@@ -167,10 +130,7 @@ export class AuthService {
         dias_de_vacaciones_al_anio,
         color_de_ojos,
         rol,
-<<<<<<< HEAD
         fecha_nacimiento, // 👈 Se guarda también en la tabla
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         primera_compra_disponible: true,
         puntos: 0
       });
@@ -233,10 +193,6 @@ export class AuthService {
       let totalFinal = puntosGanados;
 
       if (!usuario) {
-<<<<<<< HEAD
-=======
-        // Inserción sin incluir la propiedad 'email'
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         const { error: errorInsert } = await this.supabase
           .from('usuarios')
           .insert({
@@ -268,19 +224,11 @@ export class AuthService {
       console.error('❌ Error al sumar puntos:', error.message || error);
     }
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   async actualizarPuntosUsuario(nuevosPuntos: number) {
     try {
       const user = this.currentUser();
       if (!user) return;
 
-<<<<<<< HEAD
-=======
-      // Aseguramos que los puntos nunca sean negativos
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       const totalFinal = Math.max(0, nuevosPuntos);
 
       const { error: errorUpdate } = await this.supabase
@@ -300,11 +248,6 @@ export class AuthService {
       console.error('❌ Error al actualizar los puntos:', error.message || error);
     }
   }
-<<<<<<< HEAD
-
-=======
-  // Sumar crédito tras cancelar una compra
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   async sumarCredito(montoACancelar: number) {
     try {
       const user = this.currentUser();
@@ -331,10 +274,6 @@ export class AuthService {
     }
   }
 
-<<<<<<< HEAD
-=======
-  // Gastar crédito al pagar una compra
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   async gastarCredito(montoAGastar: number): Promise<boolean> {
     try {
       const user = this.currentUser();
@@ -360,7 +299,6 @@ export class AuthService {
       return false;
     }
   }
-<<<<<<< HEAD
 
   async registrarLog(accion: string, detalles: string) {
     try {
@@ -386,6 +324,4 @@ export class AuthService {
       console.error('Error inesperado al registrar log:', err.message);
     }
   }
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

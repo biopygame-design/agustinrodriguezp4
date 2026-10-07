@@ -57,10 +57,7 @@ export class ServicioCarrito {
   }
 
   agregarAlCarrito(item: any) {
-<<<<<<< HEAD
     
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     this.items.update(currentItems => {
       const nuevosItems = [...currentItems, item];
       this.guardarEnLocalStorage(nuevosItems);

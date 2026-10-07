@@ -33,7 +33,7 @@ export class Moviedetails {
 
   // Señal para guardar el objeto de la función seleccionada por el usuario
   horarioSeleccionado = signal<any | null>(null);
-
+  
   // Estados para las reseñas y puntuación promedio
   resenas = signal<Resenasmodelo[]>([]);
   promedioEstrellas = signal<number>(0);

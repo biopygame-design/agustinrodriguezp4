@@ -1,11 +1,6 @@
 <section class="add-book-container">
   <h1>➕ Agregar Nueva Pelicula</h1>
 
-<<<<<<< HEAD
-=======
-  <!-- [formGroup] — bindea el formulario al FormGroup del componente -->
-  <!-- (ngSubmit) — evento que se ejecuta al hacer submit del form -->
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   <form [formGroup]="peliculasform" (ngSubmit)="onSubmit()" class="book-form">
 
     <!-- Campo: Nombre -->
@@ -18,26 +13,11 @@
         placeholder="Ej: Inception"
         [class.input-error]="f.nombre.invalid && f.nombre.touched"
       >
-<<<<<<< HEAD
       @if (f.nombre.touched && f.nombre.invalid) {
         <div class="validation-errors">
           @if (f.nombre.hasError('required')) { <small class="error">⚠️ El nombre es obligatorio</small> }
           @if (f.nombre.hasError('minlength')) { <small class="error">⚠️ Mínimo 2 caracteres</small> }
           @if (f.nombre.hasError('maxlength')) { <small class="error">⚠️ Máximo 100 caracteres</small> }
-=======
-      <!-- Validación con @if: muestra errores específicos -->
-      @if (f.nombre.touched && f.nombre.invalid) {
-        <div class="validation-errors">
-          @if (f.nombre.hasError('required')) {
-            <small class="error">⚠️ El nombre es obligatorio</small>
-          }
-          @if (f.nombre.hasError('minlength')) {
-            <small class="error">⚠️ Mínimo 2 caracteres</small>
-          }
-          @if (f.nombre.hasError('maxlength')) {
-            <small class="error">⚠️ Máximo 100 caracteres</small>
-          }
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>
@@ -49,22 +29,12 @@
         type="text" 
         id="duracion" 
         formControlName="duracion" 
-<<<<<<< HEAD
         placeholder="Ej: 1h 59m"
-=======
-        placeholder="Ej: 120 mins"
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         [class.input-error]="f.duracion.invalid && f.duracion.touched"
       >
       @if (f.duracion.touched && f.duracion.invalid) {
         <div class="validation-errors">
-<<<<<<< HEAD
           @if (f.duracion.hasError('required')) { <small class="error">⚠️ La duración es obligatoria</small> }
-=======
-          @if (f.duracion.hasError('required')) {
-            <small class="error">⚠️ La duración es obligatoria</small>
-          }
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>
@@ -78,13 +48,8 @@
         [class.input-error]="f.genero.invalid && f.genero.touched"
       >
         <option value="" disabled>Seleccionar género...</option>
-<<<<<<< HEAD
         @for (g of generos; track g) {
           <option [value]="g">{{ g }}</option>
-=======
-        @for (genero of generos; track genero) {
-          <option [value]="genero">{{ genero }}</option>
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         }
       </select>
       @if (f.genero.touched && f.genero.invalid) {
@@ -94,11 +59,7 @@
       }
     </div>
 
-<<<<<<< HEAD
     <!-- Campo: Formato (select) - CORREGIDO -->
-=======
-    <!-- Campo: Formato (select) -->
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     <div class="form-group">
       <label for="formato">Formato *</label>
       <select 
@@ -107,13 +68,8 @@
         [class.input-error]="f.formato.invalid && f.formato.touched"
       >
         <option value="" disabled>Seleccionar formato...</option>
-<<<<<<< HEAD
         @for (fom of formato; track fom) {
           <option [value]="fom">{{ fom }}</option>
-=======
-        @for (formatos of formato; track formato) {
-          <option [value]="formato">{{ formato }}</option>
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         }
       </select>
       @if (f.formato.touched && f.formato.invalid) {
@@ -135,13 +91,7 @@
       >
       @if (f.idioma.touched && f.idioma.invalid) {
         <div class="validation-errors">
-<<<<<<< HEAD
           @if (f.idioma.hasError('required')) { <small class="error">⚠️ El idioma es obligatorio</small> }
-=======
-          @if (f.idioma.hasError('required')) {
-            <small class="error">⚠️ El idioma es obligatorio</small>
-          }
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>
@@ -158,13 +108,7 @@
       >
       @if (f.subtitulos.touched && f.subtitulos.invalid) {
         <div class="validation-errors">
-<<<<<<< HEAD
           @if (f.subtitulos.hasError('required')) { <small class="error">⚠️ Este campo es obligatorio</small> }
-=======
-          @if (f.subtitulos.hasError('required')) {
-            <small class="error">⚠️ Este campo es obligatorio</small>
-          }
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>
@@ -181,13 +125,7 @@
       >
       @if (f.horarios.touched && f.horarios.invalid) {
         <div class="validation-errors">
-<<<<<<< HEAD
           @if (f.horarios.hasError('required')) { <small class="error">⚠️ Los horarios son obligatorios</small> }
-=======
-          @if (f.horarios.hasError('required')) {
-            <small class="error">⚠️ Los horarios son obligatorios</small>
-          }
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>
@@ -204,18 +142,11 @@
       >
       @if (f.portada.touched && f.portada.invalid) {
         <div class="validation-errors">
-<<<<<<< HEAD
           @if (f.portada.hasError('required')) { <small class="error">⚠️ La URL de portada es obligatoria</small> }
-=======
-          @if (f.portada.hasError('required')) {
-            <small class="error">⚠️ La URL de portada es obligatoria</small>
-          }
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>
 
-<<<<<<< HEAD
     <!-- Campo: Clasificación -->
     <div class="form-group">
       <label for="clasificacion">Clasificación *</label>
@@ -267,41 +198,6 @@
       @switch (peliculasform.status) {
         @case ('VALID') { <p class="status-valid">✅ Formulario válido — listo para enviar</p> }
         @case ('INVALID') { <p class="status-invalid">⚠️ Completá todos los campos correctamente</p> }
-=======
-    <!-- Estado del formulario con @switch -->
-    <div class="form-status">
-      @switch (peliculasform.status) {
-        @case ('VALID') {
-          <p class="status-valid">✅ Formulario válido — listo para enviar</p>
-        }
-        @case ('INVALID') {
-          <p class="status-invalid">⚠️ Completá todos los campos correctamente</p>
-        }
-      }
-    </div>
-    <div class="form-group">
-      <label for="clasificacion">clasificacion *</label>
-      <input 
-        type="text"
-        id="nombre" 
-        formControlName="clasificacion" 
-        placeholder="Ej: Inception"
-        [class.input-error]="f.clasificacion.invalid && f.clasificacion.touched"
-      >
-      <!-- Validación con @if: muestra errores específicos -->
-      @if (f.clasificacion.touched && f.clasificacion.invalid) {
-        <div class="validation-errors">
-          @if (f.clasificacion.hasError('required')) {
-            <small class="error">⚠️ El nombre es obligatorio</small>
-          }
-          @if (f.clasificacion.hasError('minlength')) {
-            <small class="error">⚠️ Mínimo 2 caracteres</small>
-          }
-          @if (f.clasificacion.hasError('maxlength')) {
-            <small class="error">⚠️ Máximo 100 caracteres</small>
-          }
-        </div>
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       }
     </div>
 

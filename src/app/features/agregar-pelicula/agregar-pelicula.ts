@@ -2,10 +2,7 @@ import { Component,inject } from '@angular/core';
 import { ReactiveFormsModule,FormGroup,FormControl,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Movieservicie } from '../../core/service/movieservicie/movieservicie';
-<<<<<<< HEAD
 import { AuthService } from '../../core/service/authservice/authservice';
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -16,10 +13,7 @@ import { AuthService } from '../../core/service/authservice/authservice';
 export class AgregarPelicula {
   private serviciopelicula = inject(Movieservicie)
   private router = inject(Router)
-<<<<<<< HEAD
   private authService = inject(AuthService)
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
 
   generos = ['Terror', 'Accion', 'Comedia', 'Documental', 'Ciencia Ficción', 'Fantasia', 'No-Ficcion'];
@@ -77,10 +71,7 @@ export class AgregarPelicula {
     }
     const formValue = this.peliculasform.getRawValue();
     const exito = await this.serviciopelicula.agregarPelicula({
-<<<<<<< HEAD
       
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       nombre: formValue.nombre!,
       duracion : formValue.duracion!,
       genero : formValue.genero!,
@@ -97,7 +88,6 @@ export class AgregarPelicula {
 
     })
      if (exito) {
-<<<<<<< HEAD
       // Navegamos al catálogo para ver la nueva pelicula
       alert(`✅ pelicula "${formValue.nombre}" agregado exitosamente!`);
       await this.authService.registrarLog(
@@ -105,10 +95,6 @@ export class AgregarPelicula {
   `Se creó exitosamente la película "${formValue.nombre}"`
 );
   
-=======
-      // Navegamos al catálogo para ver el nuevo libro
-      alert(`✅ pelicula "${formValue.nombre}" agregado exitosamente!`);
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       this.router.navigate(['/inicio']);
     } else {
       alert('❌ Error al agregar el pelicula. Intenta nuevamente.');
