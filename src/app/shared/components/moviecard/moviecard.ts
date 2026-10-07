@@ -1,6 +1,9 @@
 import { Component,input,output,inject } from '@angular/core';
 import { movieinterface } from '../../../core/models/movieinterface/movieinterface';
+<<<<<<< HEAD
 import { Router } from '@angular/router';
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
 @Component({
   imports: [],
@@ -10,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class Moviecard {
   pelicula = input.required<movieinterface>()
+<<<<<<< HEAD
   private router = inject(Router)
   verDetalles() {
     this.router.navigate(['/pelicula', this.pelicula().id]);
@@ -27,4 +31,6 @@ export class Moviecard {
       } 
     });
   }
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

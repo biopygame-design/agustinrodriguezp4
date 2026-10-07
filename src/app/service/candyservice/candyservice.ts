@@ -120,6 +120,7 @@ export class Candyservice {
       return false;
     }
   }
+<<<<<<< HEAD
   async registrarVentaCandy(nombreProducto: string, cantidad: number = 1, usuarioId?: string): Promise<boolean> {
     try {
       const { error } = await this.supabaseClient
@@ -142,4 +143,6 @@ export class Candyservice {
       return false;
     }
   }
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

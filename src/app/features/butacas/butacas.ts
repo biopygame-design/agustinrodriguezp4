@@ -5,7 +5,10 @@ import { ButacasService } from '../../service/butacas-service/butacas-service';
 import { Butacamodelo } from '../../core/models/butacamodelo/butacamodelo';
 import { AuthService } from '../../core/service/authservice/authservice';
 import { ServicioCarrito } from '../../core/service/servicio-carrito/servicio-carrito';
+<<<<<<< HEAD
 import { SupabaseService } from '../../core/service/supabaseservicie/supabaseservice';
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 import jsPDF from 'jspdf';
 
 @Component({
@@ -20,7 +23,11 @@ export class Butacas {
   authService = inject(AuthService);
   route = inject(ActivatedRoute);
   carroservicio = inject(ServicioCarrito);
+<<<<<<< HEAD
   supabaseservice = inject(SupabaseService)
+=======
+
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   funcionId: number = 0;
   
   formatoSeleccionado: string = '2D Digital';
@@ -39,13 +46,25 @@ export class Butacas {
       map.get(b.fila)!.push(b);
     }
     
+<<<<<<< HEAD
+=======
+    // Ordenamos cada fila por su número de asiento de menor a mayor
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     map.forEach((asientos) => {
       asientos.sort((a, b) => a.numero - b.numero);
     });
 
+<<<<<<< HEAD
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
   });
 
+=======
+    // Devolvemos un array ordenado alfabéticamente por la letra de la fila (A, B, C...)
+    return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
+  });
+
+  // 🟢 Única declaración de los cálculos computados
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   subtotal = computed(() => {
     return this.butacasSeleccionadasList().reduce((acc, b) => {
       const precio = b.tipo === 'vip' ? 6500 : this.precioUnitario();
@@ -89,6 +108,7 @@ export class Butacas {
     }
   }
 
+<<<<<<< HEAD
   async agregarAlCarrito() {
     const seleccionadas = this.butacasSeleccionadasList();
     if (seleccionadas.length === 0) return;
@@ -106,6 +126,12 @@ export class Butacas {
       edadMinimaCalculada = 13;
     }
 
+=======
+  agregarAlCarrito() {
+    const seleccionadas = this.butacasSeleccionadasList();
+    if (seleccionadas.length === 0) return;
+
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     const idsButacas = seleccionadas.map(b => b.id);
     const nombresButacas = seleccionadas.map(b => `${b.fila}${b.numero}`).join(', ');
     
@@ -123,11 +149,20 @@ export class Butacas {
         horario: this.horarioSeleccionado,
         formato: this.formatoSeleccionado,
         idsButacas: idsButacas,
+<<<<<<< HEAD
         nombresButacas: nombresButacas,
         edadMinima: edadMinimaCalculada // 👈 ¡Viaja 18 si es +18, o 0 si es ATP!
       }
     });
 
+=======
+        nombresButacas: nombresButacas
+      }
+    });
+
+   
+
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     alert('¡Entradas agregadas al carrito con éxito! 🛒');
     this.butacasSeleccionadasList.set([]);
   }

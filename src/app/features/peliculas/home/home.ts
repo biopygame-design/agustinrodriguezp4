@@ -23,7 +23,11 @@ export class Home {
   generoSeleccionado = signal("todos");
 
   // Lista de géneros para los botones (podés adaptarla a tus géneros reales)
+<<<<<<< HEAD
   generosDisponibles = ['todos', 'Accion', 'Comedia', 'Terror', 'Drama'];
+=======
+  generosDisponibles = ['todos', 'Acción', 'Comedia', 'Terror', 'Drama'];
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
   // Computed que filtra tanto por texto como por género
   peliculasfiltradas = computed(() => {

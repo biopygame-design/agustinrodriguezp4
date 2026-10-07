@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* --- BLOQUE 2: PERFIL Y ENTRADAS COMPRADAS --- */
 .perfil-container {
   background-color: #18181b;
@@ -81,4 +82,89 @@
 .btn-cancelar:hover {
   background-color: #ef4444;
   color: #ffffff;
+=======
+/* --- BLOQUE 2: PERFIL Y ENTRADAS COMPRADAS --- */
+.perfil-container {
+  background-color: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 2rem;
+  color: #f4f4f5;
+  margin-bottom: 2rem;
+}
+
+.perfil-container h2, 
+.perfil-container h3 {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.card-datos {
+  background-color: #121212;
+  border: 1px solid #27272a;
+  padding: 1.2rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.card-datos p {
+  margin-bottom: 0.5rem;
+  color: #d4d4d8;
+}
+
+.credito-texto {
+  color: #22c55e !important; /* Verde destacado para dinero a favor */
+  font-weight: 600;
+}
+
+.perfil-container hr {
+  border: 0;
+  border-top: 1px solid #27272a;
+  margin: 1.5rem 0;
+}
+
+.sin-entradas {
+  background-color: #121212;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px dashed #3f3f46;
+  color: #a1a1aa;
+}
+
+.lista-entradas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.entrada-card {
+  background-color: #121212;
+  border: 1px solid #27272a;
+  border-left: 4px solid #3b82f6;
+  padding: 1.2rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.btn-cancelar {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

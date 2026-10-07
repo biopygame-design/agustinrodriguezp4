@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 import { Component, inject, signal, computed, runInInjectionContext } from '@angular/core'; // 👈 Asegurate de importar signal y computed si no los tenías
+=======
+import { Component, inject, signal, computed } from '@angular/core'; // 👈 Asegurate de importar signal y computed si no los tenías
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 import { ServicioCarrito } from '../../core/service/servicio-carrito/servicio-carrito';
 import { AuthService } from '../../core/service/authservice/authservice';
 import { ButacasService } from '../../service/butacas-service/butacas-service';
 import { UpperCasePipe, CommonModule } from '@angular/common'; // 👈 Agregá CommonModule
+<<<<<<< HEAD
 import { FormsModule } from '@angular/forms';
 import { Candyservice } from '../../service/candyservice/candyservice'; // 👈 Agregá FormsModule para el checkbox
+=======
+import { FormsModule } from '@angular/forms'; // 👈 Agregá FormsModule para el checkbox
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 import jsPDF from 'jspdf';
 
 @Component({
@@ -19,7 +27,10 @@ export class Carrito {
   butacasService = inject(ButacasService);
   tieneCredito = computed(() => (this.usuarioActual()?.credito || 0) > 0);
   creditoDisponible = computed(() => this.usuarioActual()?.credito || 0);
+<<<<<<< HEAD
   candysercive = inject(Candyservice)
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
   // 🟢 1. Estado para el checkbox de usar crédito
   usarCredito = signal<boolean>(false);
@@ -44,6 +55,7 @@ export class Carrito {
 
     const usuario = this.usuarioActual();
     const userId = usuario?.id || 'usuario-anonimo';
+<<<<<<< HEAD
 
     // 🛑 1. VALIDACIÓN DE EDAD PREVIA A PROCESAR NADA
     for (const item of items) {
@@ -102,11 +114,20 @@ export class Carrito {
     }
 
     // 🟢 3. Si decidió usar crédito, lo descontamos de su cuenta en Supabase/Auth
+=======
+    const montoCredito = this.creditoAUsar();
+
+    // 🟢 4. Si decidió usar crédito, lo descontamos de su cuenta en Supabase/Auth
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     if (montoCredito > 0) {
       await this.authService.gastarCredito(montoCredito);
     }
 
+<<<<<<< HEAD
     // 4. Recorremos los ítems para procesar entradas (Supabase + PDF)
+=======
+    // 5. Recorremos los ítems para procesar entradas (Supabase + PDF)
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     for (const item of items) {
       if (item.tipo === 'entrada' && item.detalles?.idsButacas) {
         const codigoReserva = 'CINE-UTN-' + Math.floor(100000 + Math.random() * 900000);
@@ -137,7 +158,11 @@ export class Carrito {
       }
     }
 
+<<<<<<< HEAD
     // 5. Procesar canje de puntos de combos si los hubiera
+=======
+    // 6. Procesar canje de puntos de combos si los hubiera
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     for (const item of items) {
       if (item.tipo === 'combo_canje' && item.puntosNecesarios) {
         if (usuario) {
@@ -147,7 +172,11 @@ export class Carrito {
       }
     }
 
+<<<<<<< HEAD
     // 6. Sumar puntos por la compra actual (sobre el total final real)
+=======
+    // 7. Sumar puntos por la compra actual (sobre el total final real)
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     const puntosGanados = Math.floor(this.totalConCredito() * 0.10);
     
     if (this.authService.currentUser() && this.totalConCredito() > 0) {
@@ -161,7 +190,10 @@ export class Carrito {
     this.cartService.vaciarCarrito(); 
     this.cartService.limpiarPromoTrasCompra();
     this.usarCredito.set(false);
+<<<<<<< HEAD
   
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   }
   private async convertirImagenABase64(url: string): Promise<string> {
     const response = await fetch(url);

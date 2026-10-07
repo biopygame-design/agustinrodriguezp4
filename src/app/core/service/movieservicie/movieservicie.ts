@@ -127,6 +127,7 @@ export class Movieservicie {
       .subscribe();
   }
 
+<<<<<<< HEAD
   async obtenerPeliculaPorId(id: string | number): Promise<movieinterface | null> {
     const { data, error } = await this.Ssupabaseservice
       .from('peliculas')
@@ -140,6 +141,12 @@ export class Movieservicie {
     }
     return data;
   }
+=======
+  getLibroById(id: string) {
+    return computed(() => this.peliculasSignal().find(libro => libro.id === id));
+  }
+  
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   async agregarPelicula(pelicula: Omit<movieinterface, 'id'>): Promise<boolean> {
     const { error } = await this.Ssupabaseservice
       .from('peliculas')
@@ -185,6 +192,7 @@ export class Movieservicie {
     
     return data || [];
   }
+<<<<<<< HEAD
   async actualizarPelicula(id: string | number, peliculaData: Partial<movieinterface>): Promise<boolean> {
     const { error } = await this.Ssupabaseservice
       .from('peliculas')
@@ -199,4 +207,6 @@ export class Movieservicie {
     console.log(`🎬 Película con ID ${id} actualizada correctamente`);
     return true;
   }
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

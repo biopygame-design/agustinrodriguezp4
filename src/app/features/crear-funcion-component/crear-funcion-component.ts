@@ -2,7 +2,10 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButacasService } from '../../service/butacas-service/butacas-service'; // Ajusta la ruta a tu servicio
+<<<<<<< HEAD
 import { AuthService } from '../../core/service/authservice/authservice';
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
 @Component({
   selector: 'app-crear-funcion',
@@ -13,8 +16,12 @@ import { AuthService } from '../../core/service/authservice/authservice';
 })
 export class CrearFuncionComponent {
  private butacasService = inject(ButacasService);
+<<<<<<< HEAD
   private cdr = inject(ChangeDetectorRef);
   private servicioauth = inject(AuthService) // <--- 2. Inyectar el detector de cambios
+=======
+  private cdr = inject(ChangeDetectorRef); // <--- 2. Inyectar el detector de cambios
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
   peliculaId: string | null = null;
   salaId: number = 1;
@@ -71,10 +78,13 @@ export class CrearFuncionComponent {
       // 3. Desactivar carga y obligar a Angular a refrescar la vista del botón inmediatamente
       this.cargando = false;
       this.cdr.detectChanges(); 
+<<<<<<< HEAD
       await this.servicioauth.registrarLog(
     'Modificación de Película', 
     'Se actualizó el precio de la película Batman'
   );
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     }
   }
 }

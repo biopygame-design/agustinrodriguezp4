@@ -325,6 +325,7 @@ async validarEntradaPorCodigo(codigoIngresado: string) {
     return { exito: false, mensaje: 'Ocurrió un error al intentar validar el código.' };
   }
 }
+<<<<<<< HEAD
 async liberarButacas(idsButacas: number[]): Promise<boolean> {
   try {
     // Dependiendo de tu tabla, actualizamos el estado de las butacas a libres/disponibles
@@ -382,4 +383,6 @@ async obtenerClasificacionPorFuncion(funcionId: number): Promise<string> {
     return '';
   }
 }
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

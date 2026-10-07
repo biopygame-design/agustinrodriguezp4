@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Routes } from '@angular/router';
 import { Moviedetails } from './features/moviedetails/moviedetails';
 import { Header } from './layout/header/header';
@@ -43,3 +44,21 @@ export const routes: Routes = [
   { path: 'promos', component: Listapromos, pathMatch: 'full' },
   { path: 'usuario', component: Perfilcompras, pathMatch: 'full' },
 ];
+=======
+import { Routes } from '@angular/router';
+import { Moviedetails } from './features/moviedetails/moviedetails';
+import { Header } from './layout/header/header';
+import { Home } from './features/peliculas/home/home';
+import { Homec } from './candy/home/homec';
+import { Register } from './features/auth/register/register';
+import { Login } from './features/auth/login/login';
+
+export const routes: Routes = [
+    {path: 'inicio',component :Home,pathMatch:'full' },
+    {path: 'candys',component: Homec,pathMatch : 'full'},
+    {path: 'registrarse',component : Register,pathMatch: 'full'},
+    {path : 'iniciar',component: Login,pathMatch: 'full'}
+    
+
+];
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040

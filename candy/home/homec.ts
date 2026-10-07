@@ -3,10 +3,7 @@ import { Candyservice } from '../../service/candyservice/candyservice';
 import { Searchbar } from '../../shared/components/searchbar/searchbar';
 import { Candycard } from '../../shared/components/candycard/candycard';
 import { RouterOutlet } from '@angular/router';
-<<<<<<< HEAD
 import { ServicioCarrito } from '../../core/service/servicio-carrito/servicio-carrito';
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
 @Component({
   imports: [RouterOutlet, Candycard, Searchbar],
@@ -16,25 +13,15 @@ import { ServicioCarrito } from '../../core/service/servicio-carrito/servicio-ca
 })
 export class Homec {
   private candyservice = inject(Candyservice);
-<<<<<<< HEAD
   private cartService = inject(ServicioCarrito); // 👈 2. Inyectalo acá
 
   candy = this.candyservice.candy;
-=======
-
-  candy = this.candyservice.candy;
-
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   filtrobusqueda = signal("");
 
   candysfiltrados = computed(() => {
     const termino = this.filtrobusqueda().toLowerCase().trim();
     const lista = this.candy();
 
-<<<<<<< HEAD
-=======
-    // 🔍 Aquí dentro del computed sí funciona correctamente el console.log
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     console.log("Datos actuales en el componente Homec:", lista);
 
     if (!termino) {
@@ -45,7 +32,6 @@ export class Homec {
       (candy.id ?? '').toLowerCase().includes(termino)
     );
   });
-<<<<<<< HEAD
 
   // 👈 3. Método para manejar la acción de agregar al carrito desde la card
   agregarAlCarrito(candy: any) {
@@ -59,6 +45,4 @@ export class Homec {
     });
     alert(`¡${candy.nombre} agregado al carrito! 🍿`);
   }
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

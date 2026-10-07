@@ -18,12 +18,17 @@
     "@angular/platform-browser": "^22.1.0",
     "@angular/router": "^22.1.0",
     "@supabase/supabase-js": "^2.116.0",
+<<<<<<< HEAD
     "chart.js": "^4.5.1",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5"
+=======
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   },
   "devDependencies": {
     "@angular/build": "^22.1.5",

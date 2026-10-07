@@ -3,7 +3,10 @@ import { EntradaSupabaseModelo } from '../../core/models/entrada-modelo/entrada-
 import { SupabaseService } from '../../core/service/supabaseservicie/supabaseservice';
 import { AuthService } from '../../core/service/authservice/authservice';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { ButacasService } from '../../service/butacas-service/butacas-service';
+=======
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
 @Component({
   imports: [CommonModule],
@@ -14,6 +17,7 @@ import { ButacasService } from '../../service/butacas-service/butacas-service';
 export class Perfilcompras {
   authService = inject(AuthService);
   supabaseService = inject(SupabaseService);
+<<<<<<< HEAD
   butacasservice = inject(ButacasService)
 
   usuario = this.authService.currentUserData;
@@ -21,6 +25,11 @@ export class Perfilcompras {
   getNombrePelicula(entrada: any): string {
     return entrada.funciones?.peliculas?.nombre || 'Película desconocida';
   }
+=======
+
+  usuario = this.authService.currentUserData;
+  entradas = signal<EntradaSupabaseModelo[]>([]);
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
   constructor() {
     this.cargarDatosUsuarioYEntradas();
@@ -33,6 +42,7 @@ export class Perfilcompras {
     }
   }
 
+<<<<<<< HEAD
  async cargarEntradas(userId: string) {
     // 1. Traemos las entradas del usuario de forma simple
     const { data: entradasData, error } = await this.supabaseService.client
@@ -101,6 +111,33 @@ export class Perfilcompras {
     const { data: funcionData, error: funcionError } = await this.supabaseService.client
       .from('funciones')
       .select('*')
+=======
+  async cargarEntradas(userId: string) {
+    const { data, error } = await this.supabaseService.client
+      .from('entradas') // Asegúrate de que este sea el nombre de tu tabla en Supabase
+      .select('*')
+      .eq('usuario_id', userId);
+
+    if (error) {
+      console.error('Error al obtener entradas:', error.message);
+      this.entradas.set([]);
+    } else {
+      this.entradas.set(data || []);
+    }
+  }
+
+ async cancelarEntrada(entrada: EntradaSupabaseModelo) {
+    // 1. Validar que la entrada no esté usada
+    if (entrada.estado === 'usada') {
+      alert('❌ No se puede cancelar una entrada que ya fue utilizada.');
+      return;
+    }
+
+    // 2. Consultar el horario de la función en la tabla 'funciones' usando el funcion_id
+    const { data: funcionData, error: funcionError } = await this.supabaseService.client
+      .from('funciones') // Asegurate de que tu tabla se llame así en Supabase
+      .select('*')       // Traemos todos los campos para ver cómo se llama la columna de fecha/hora
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       .eq('id', entrada.funcion_id)
       .single();
 
@@ -110,6 +147,10 @@ export class Perfilcompras {
       return;
     }
 
+<<<<<<< HEAD
+=======
+    // ⚠️ IMPORTANTE: Ajustá 'fecha' y 'horario' según los nombres reales de las columnas en tu tabla 'funciones' de Supabase
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     const fechaHoraFuncionStr = `${funcionData.fecha} ${funcionData.horario}`;
     const fechaFuncion = new Date(fechaHoraFuncionStr).getTime();
     const ahora = new Date().getTime();
@@ -121,6 +162,7 @@ export class Perfilcompras {
       return;
     }
 
+<<<<<<< HEAD
     // 4. Liberar las butacas en la base de datos (si la entrada tiene guardados los IDs de butacas)
     if (entrada.ids_butacas && entrada.ids_butacas.length > 0) {
       const liberadasExito = await this.butacasservice.liberarButacas(entrada.ids_butacas);
@@ -155,6 +197,20 @@ export class Perfilcompras {
     alert(`¡Reserva cancelada con éxito! Se liberaron las butacas y se acreditaron $${entrada.total} en tu cuenta como crédito.`);
     
     // 9. Recargamos el listado de entradas del usuario
+=======
+    // 4. Acreditamos el dinero como crédito a favor del usuario
+    await this.authService.sumarCredito(entrada.total);
+
+    // 5. Actualizar el estado de la entrada a 'cancelada' en la tabla 'entradas'
+    await this.supabaseService.client
+      .from('entradas')
+      .update({ estado: 'cancelada' }) // Opcional: si querés marcarla como cancelada
+      .eq('id', entrada.id);
+
+    alert(`¡Reserva cancelada con éxito! Se acreditaron $${entrada.total} en tu cuenta como crédito.`);
+    
+    // 6. Recargamos el listado de entradas del usuario
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     const user = this.authService.currentUser();
     if (user) await this.cargarEntradas(user.id);
   }

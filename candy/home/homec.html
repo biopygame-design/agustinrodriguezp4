@@ -2,25 +2,18 @@
 <section class="home-container">
   <h2>🍭 Catálogo de candys</h2>
 
-<<<<<<< HEAD
   <!-- Buscador enlazado a la señal filtrobusqueda -->
-=======
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   <app-searchbar [(termino)]="filtrobusqueda" />
 
   @if (candysfiltrados().length > 0) {
     <div class="movies-grid">
       @for (candy of candysfiltrados(); track candy.id) {
         <div class="pelicula-wrapper">
-<<<<<<< HEAD
           <!-- Pasamos la data del candy y escuchamos el evento para agregarlo al carrito -->
           <app-candycard 
             [candy]="candy" 
             (agregarAlCarrito)="agregarAlCarrito(candy)" 
           />
-=======
-          <app-candycard [candy]="candy" />
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
         </div>
       }
     </div>

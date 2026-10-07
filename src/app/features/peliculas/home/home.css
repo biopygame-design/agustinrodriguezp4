@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* --- CONTENEDOR GENERAL --- */
 .home-container {
   max-width: 1200px;
@@ -104,4 +105,112 @@
   color: #9ca3af;
   font-size: 1.1rem;
   margin-top: 2rem;
+=======
+/* --- CONTENEDOR GENERAL --- */
+.home-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  background-color: #121212;
+  color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* --- TÍTULO PRINCIPAL --- */
+.home-container > h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+/* --- PERFIL DE USUARIO --- */
+.user-profile {
+  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  border-left: 4px solid #e50914; /* Toque rojo estilo cine */
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.user-profile h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.home-container > p {
+  color: #9ca3af;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+/* --- BOTONES DE FILTRO POR GÉNERO --- */
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 2rem 0;
+}
+
+.d-flex .btn {
+  background-color: #1f2937;
+  color: #9ca3af;
+  border: 1px solid #374151;
+  border-radius: 50rem; /* Estilo píldora */
+  padding: 0.45rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.d-flex .btn:hover {
+  background-color: #374151;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.d-flex .btn.btn-primary {
+  background-color: #e50914;
+  border-color: #e50914;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
+}
+
+.d-flex .btn.btn-outline-secondary {
+  background-color: #1f2937;
+  color: #9ca3af;
+  border-color: #374151;
+}
+
+/* --- GRILLA DE PELÍCULAS --- */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.pelicula-wrapper {
+  transition: transform 0.25s ease;
+}
+
+.pelicula-wrapper:hover {
+  transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+}
+
+/* --- ESTADO SIN RESULTADOS --- */
+.no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  border: 1px dashed #374151;
+  color: #9ca3af;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 }

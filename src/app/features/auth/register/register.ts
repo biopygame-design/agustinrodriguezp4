@@ -23,7 +23,11 @@ export class Register {
     dias_de_vacaciones_al_anio: ['', [Validators.required]],
     color_de_ojos: ['', [Validators.required, Validators.minLength(3)]],
     rol: ['', [Validators.required]],
+<<<<<<< HEAD
     fecha_nacimiento: ['', [Validators.required]]
+=======
+    edad : [0,[Validators.required]]
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
   });
 
   isLoading = signal(false);
@@ -45,8 +49,12 @@ export class Register {
       tipo_de_sangre, 
       dias_de_vacaciones_al_anio, 
       color_de_ojos, 
+<<<<<<< HEAD
       rol,
       fecha_nacimiento 
+=======
+      rol 
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
     } = this.registerForm.value;
 
     try {
@@ -58,8 +66,12 @@ export class Register {
         tipo_de_sangre!, 
         dias_de_vacaciones_al_anio!, 
         color_de_ojos!, 
+<<<<<<< HEAD
         rol!,
         fecha_nacimiento!
+=======
+        rol!
+>>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
       );
 
       if (error) throw error;
