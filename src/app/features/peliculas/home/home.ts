@@ -1,13 +1,14 @@
-import { Component, signal,computed,effect,inject } from '@angular/core';
+import { Component, signal, computed, effect, inject } from '@angular/core';
 import { movieinterface } from '../../../core/models/movieinterface/movieinterface';
 import { Searchbar } from '../../../shared/components/searchbar/searchbar';
 import { Movieservicie } from '../../../core/service/movieservicie/movieservicie';
-import { Router,RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Moviecard } from '../../../shared/components/moviecard/moviecard';
 import { AuthService } from '../../../core/service/authservice/authservice';
 import { TitleCasePipe } from '@angular/common';
+
 @Component({
-  imports: [Searchbar,RouterOutlet,Moviecard,TitleCasePipe],
+  imports: [Searchbar, RouterOutlet, Moviecard, TitleCasePipe],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',
@@ -22,18 +23,14 @@ export class Home {
   filtrobusqueda = signal("");
   generoSeleccionado = signal("todos");
 
-  // Lista de géneros para los botones (podés adaptarla a tus géneros reales)
-<<<<<<< HEAD
-  generosDisponibles = ['todos', 'Accion', 'Comedia', 'Terror', 'Drama'];
-=======
+  // Lista de géneros para los botones
   generosDisponibles = ['todos', 'Acción', 'Comedia', 'Terror', 'Drama'];
->>>>>>> dd3b82963917c9df8e99f6fb50eddd8acc520040
 
   // Computed que filtra tanto por texto como por género
   peliculasfiltradas = computed(() => {
     const termino = this.filtrobusqueda().toLowerCase().trim();
     const genero = this.generoSeleccionado();
-    let lista = this.movieservicie.peliculas().filter(p => !p.es_preventa);;
+    let lista = this.movieservicie.peliculas().filter(p => !p.es_preventa);
 
     // 1. Filtrar por género si no es 'todos'
     if (genero !== 'todos') {
