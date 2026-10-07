@@ -1,0 +1,33 @@
+<div class="p-6 max-w-5xl mx-auto bg-gray-900 rounded-xl shadow-xl text-white border border-gray-800">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-amber-400">📊 Rendimiento de Películas</h2>
+    
+    <div class="flex space-x-2">
+      <button 
+        (click)="cambiarFiltro('semana')" 
+        [class]="filtroActual() === 'semana' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300'"
+        class="px-4 py-2 rounded-lg text-sm font-medium transition">
+        Última Semana
+      </button>
+      <button 
+        (click)="cambiarFiltro('mes')" 
+        [class]="filtroActual() === 'mes' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300'"
+        class="px-4 py-2 rounded-lg text-sm font-medium transition">
+        Último Mes
+      </button>
+    </div>
+  </div>
+
+  <!-- 🟢 Contenedor con altura fija (h-96) y relative para Chart.js -->
+  <div class="relative h-96 w-full bg-gray-950 p-4 rounded-lg border border-gray-800">
+    <canvas id="chartPeliculas"></canvas>
+  </div>
+  <div class="flex gap-4 my-4">
+  <button (click)="exportarExcel()" class="bg-green-600 text-px px-4 py-2 rounded text-white font-semibold hover:bg-green-700">
+    📊 Exportar a Excel
+  </button>
+  <button (click)="exportarPDF()" class="bg-red-600 text-px px-4 py-2 rounded text-white font-semibold hover:bg-red-700">
+    📄 Exportar a PDF
+  </button>
+</div>
+</div>

@@ -1,0 +1,6 @@
+<div class="card">
+  <img [src]="candy().imagen" [alt]="candy().nombre" />
+  <h3>{{ candy().nombre | uppercase }}</h3>
+  <p class="precio">${{ candy().precio }}</p>
+  <button (click)="onAgregar()">Agregar</button>
+</div>

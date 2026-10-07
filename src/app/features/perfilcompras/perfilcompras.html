@@ -1,0 +1,40 @@
+<div class="perfil-container" *ngIf="usuario() as u">
+  <h2>Mi Perfil y Compras - Cine UTN</h2>
+  
+  <div class="card-datos">
+    <p><strong>Nombre:</strong> {{ u.nombre }} {{ u.apellido }}</p>
+    <p><strong>Puntos acumulados:</strong> ⭐ {{ u.puntos || 0 }}</p>
+    <p class="credito-texto"><strong>Crédito disponible a favor:</strong> 💰 ${{ u.credito || 0 }}</p>
+  </div>
+
+  <hr>
+
+  <h3>Mis Entradas Compradas</h3>
+  
+  <div *ngIf="entradas().length === 0" class="sin-entradas">
+    <p>No tenés compras de entradas registradas.</p>
+  </div>
+
+  <div class="lista-entradas">
+    <div *ngFor="let entrada of entradas()" class="entrada-card">
+      
+      <!-- 🎬 Usamos la función auxiliar, evitando errores de TypeScript -->
+      <p class="text-lg font-bold text-blue-400">
+        Película: {{ getNombrePelicula(entrada) }}
+      </p>
+
+      <p><strong>Código de Reserva:</strong> {{ entrada.codigo_qr }}</p>
+      <p><strong>Asientos:</strong> {{ entrada.asientos }}</p>
+      <p><strong>Total pagado:</strong> ${{ entrada.total }}</p>
+      <p><strong>Estado:</strong> {{ entrada.estado || 'valida' }}</p>
+      
+      <!-- 🟢 El botón desaparece si ya está usada O si fue cancelada -->
+      <button 
+        class="btn-cancelar" 
+        *ngIf="entrada.estado !== 'usada' && entrada.estado !== 'cancelada'" 
+        (click)="cancelarEntrada(entrada)">
+        Cancelar Entrada (Obtener Crédito)
+      </button>
+    </div>
+  </div>
+</div>

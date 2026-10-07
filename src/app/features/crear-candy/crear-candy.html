@@ -1,0 +1,44 @@
+<div class="container-agregar-candy">
+  <h2>Agregar Producto al Candy Bar</h2>
+
+  <form [formGroup]="candyForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Nombre -->
+    <div class="form-group">
+      <label>Nombre del Producto:</label>
+      <input type="text" formControlName="nombre" placeholder="Ej: Combo Gigante con Gaseosa">
+      @if (f['nombre'].touched && f['nombre'].invalid) {
+        <small class="error">El nombre es obligatorio (mínimo 2 caracteres).</small>
+      }
+    </div>
+
+    <!-- Descripción -->
+   
+
+    <!-- Categoría -->
+    
+    <!-- Precio -->
+    <div class="form-group">
+      <label>Precio ($):</label>
+      <input type="number" formControlName="precio" placeholder="0.00">
+      @if (f['precio'].touched && f['precio'].invalid) {
+        <small class="error">Ingrese un precio válido.</small>
+      }
+    </div>
+
+    <!-- Imagen (URL) -->
+    <div class="form-group">
+      <label>URL de la Imagen:</label>
+      <input type="text" formControlName="imagen" placeholder="https://...">
+      @if (f['imagen'].touched && f['imagen'].invalid) {
+        <small class="error">La URL de la imagen es obligatoria.</small>
+      }
+    </div>
+
+    <!-- Botón Submit -->
+    <button type="submit" [disabled]="candyForm.invalid" class="btn-guardar">
+      Guardar Producto
+    </button>
+
+  </form>
+</div>

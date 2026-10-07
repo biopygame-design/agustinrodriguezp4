@@ -1,0 +1,209 @@
+<section class="add-book-container">
+  <h1>➕ Agregar Nueva Pelicula</h1>
+
+  <form [formGroup]="peliculasform" (ngSubmit)="onSubmit()" class="book-form">
+
+    <!-- Campo: Nombre -->
+    <div class="form-group">
+      <label for="nombre">Nombre *</label>
+      <input 
+        type="text" 
+        id="nombre" 
+        formControlName="nombre" 
+        placeholder="Ej: Inception"
+        [class.input-error]="f.nombre.invalid && f.nombre.touched"
+      >
+      @if (f.nombre.touched && f.nombre.invalid) {
+        <div class="validation-errors">
+          @if (f.nombre.hasError('required')) { <small class="error">⚠️ El nombre es obligatorio</small> }
+          @if (f.nombre.hasError('minlength')) { <small class="error">⚠️ Mínimo 2 caracteres</small> }
+          @if (f.nombre.hasError('maxlength')) { <small class="error">⚠️ Máximo 100 caracteres</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Duración -->
+    <div class="form-group">
+      <label for="duracion">Duración *</label>
+      <input 
+        type="text" 
+        id="duracion" 
+        formControlName="duracion" 
+        placeholder="Ej: 1h 59m"
+        [class.input-error]="f.duracion.invalid && f.duracion.touched"
+      >
+      @if (f.duracion.touched && f.duracion.invalid) {
+        <div class="validation-errors">
+          @if (f.duracion.hasError('required')) { <small class="error">⚠️ La duración es obligatoria</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Género (select) -->
+    <div class="form-group">
+      <label for="genero">Género *</label>
+      <select 
+        id="genero" 
+        formControlName="genero"
+        [class.input-error]="f.genero.invalid && f.genero.touched"
+      >
+        <option value="" disabled>Seleccionar género...</option>
+        @for (g of generos; track g) {
+          <option [value]="g">{{ g }}</option>
+        }
+      </select>
+      @if (f.genero.touched && f.genero.invalid) {
+        <div class="validation-errors">
+          <small class="error">⚠️ Seleccioná un género</small>
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Formato (select) - CORREGIDO -->
+    <div class="form-group">
+      <label for="formato">Formato *</label>
+      <select 
+        id="formato" 
+        formControlName="formato"
+        [class.input-error]="f.formato.invalid && f.formato.touched"
+      >
+        <option value="" disabled>Seleccionar formato...</option>
+        @for (fom of formato; track fom) {
+          <option [value]="fom">{{ fom }}</option>
+        }
+      </select>
+      @if (f.formato.touched && f.formato.invalid) {
+        <div class="validation-errors">
+          <small class="error">⚠️ Seleccioná un formato</small>
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Idioma -->
+    <div class="form-group">
+      <label for="idioma">Idioma *</label>
+      <input 
+        type="text" 
+        id="idioma" 
+        formControlName="idioma" 
+        placeholder="Ej: Español"
+        [class.input-error]="f.idioma.invalid && f.idioma.touched"
+      >
+      @if (f.idioma.touched && f.idioma.invalid) {
+        <div class="validation-errors">
+          @if (f.idioma.hasError('required')) { <small class="error">⚠️ El idioma es obligatorio</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Subtítulos -->
+    <div class="form-group">
+      <label for="subtitulos">Subtítulos *</label>
+      <input 
+        type="text" 
+        id="subtitulos" 
+        formControlName="subtitulos" 
+        placeholder="Ej: Español / Ninguno"
+        [class.input-error]="f.subtitulos.invalid && f.subtitulos.touched"
+      >
+      @if (f.subtitulos.touched && f.subtitulos.invalid) {
+        <div class="validation-errors">
+          @if (f.subtitulos.hasError('required')) { <small class="error">⚠️ Este campo es obligatorio</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Horarios -->
+    <div class="form-group">
+      <label for="horarios">Horarios (separados por comas) *</label>
+      <input 
+        type="text" 
+        id="horarios" 
+        formControlName="horarios" 
+        placeholder="Ej: 14:00, 18:00, 21:30"
+        [class.input-error]="f.horarios.invalid && f.horarios.touched"
+      >
+      @if (f.horarios.touched && f.horarios.invalid) {
+        <div class="validation-errors">
+          @if (f.horarios.hasError('required')) { <small class="error">⚠️ Los horarios son obligatorios</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: URL de Portada -->
+    <div class="form-group">
+      <label for="portada">URL de Portada *</label>
+      <input 
+        type="text" 
+        id="portada" 
+        formControlName="portada" 
+        placeholder="https://ejemplo.com/portada.jpg"
+        [class.input-error]="f.portada.invalid && f.portada.touched"
+      >
+      @if (f.portada.touched && f.portada.invalid) {
+        <div class="validation-errors">
+          @if (f.portada.hasError('required')) { <small class="error">⚠️ La URL de portada es obligatoria</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Clasificación -->
+    <div class="form-group">
+      <label for="clasificacion">Clasificación *</label>
+      <input 
+        type="text"
+        id="clasificacion" 
+        formControlName="clasificacion" 
+        placeholder="Ej: +13"
+        [class.input-error]="f.clasificacion.invalid && f.clasificacion.touched"
+      >
+      @if (f.clasificacion.touched && f.clasificacion.invalid) {
+        <div class="validation-errors">
+          @if (f.clasificacion.hasError('required')) { <small class="error">⚠️ La clasificación es obligatoria</small> }
+        </div>
+      }
+    </div>
+
+    <!-- Campo: Fecha de Estreno -->
+    <div class="form-group">
+      <label for="fecha_estreno">Fecha de Estreno *</label>
+      <input 
+        type="date"
+        id="fecha_estreno" 
+        formControlName="fecha_estreno"
+        [class.input-error]="f.fecha_estreno.invalid && f.fecha_estreno.touched"
+      >
+    </div>
+
+    <!-- Campo: Es Preventa (Checkbox) -->
+    <div class="form-group">
+      <label>
+        <input type="checkbox" formControlName="es_preventa"> ¿Es preventa?
+      </label>
+    </div>
+
+    <!-- Campo: Precio Preventa -->
+    <div class="form-group">
+      <label for="precio_preventa">Precio Preventa *</label>
+      <input 
+        type="number"
+        id="precio_preventa" 
+        formControlName="precio_preventa" 
+        placeholder="Ej: 8.50"
+      >
+    </div>
+
+    <!-- Estado del formulario -->
+    <div class="form-status">
+      @switch (peliculasform.status) {
+        @case ('VALID') { <p class="status-valid">✅ Formulario válido — listo para enviar</p> }
+        @case ('INVALID') { <p class="status-invalid">⚠️ Completá todos los campos correctamente</p> }
+      }
+    </div>
+
+    <!-- Botón de Envío -->
+    <button type="submit" [disabled]="peliculasform.invalid" class="submit-btn">
+      🎬 Agregar al Catálogo
+    </button>
+  </form>
+</section>

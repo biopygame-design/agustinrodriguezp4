@@ -1,0 +1,111 @@
+<div class="max-w-3xl mx-auto p-6 bg-gray-900 text-white rounded-xl shadow-lg mt-8">
+  <h2 class="text-2xl font-bold mb-6 text-blue-400">Editar Película</h2>
+
+  <!-- 🎯 Selector de Películas -->
+  <div class="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
+    <label class="block text-sm font-medium mb-2 text-blue-300">Seleccioná la película que deseas modificar:</label>
+    <select (change)="onPeliculaSelect($event)" class="w-full p-2.5 rounded bg-gray-900 border border-gray-700 focus:border-blue-500 focus:outline-none text-white">
+      <option value="">-- Seleccionar película --</option>
+      @for (peli of listaPeliculas(); track peli.id) {
+        <option [value]="peli.id">{{ peli.nombre }}</option>
+      }
+    </select>
+  </div>
+
+  <form [formGroup]="peliculasform" (ngSubmit)="onSubmit()" class="space-y-4">
+    
+    <!-- Nombre -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Nombre de la película</label>
+      <input type="text" formControlName="nombre" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+    </div>
+
+    <!-- Duración y Género -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Duración</label>
+        <input type="text" formControlName="duracion" placeholder="Ej: 120 minutos" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Género</label>
+        <select formControlName="genero" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none">
+          <option value="">Seleccione un género</option>
+          @for (genero of generos; track genero) {
+            <option [value]="genero">{{ genero }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Formato e Idioma -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Formato</label>
+        <select formControlName="formato" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none">
+          <option value="">Seleccione formato</option>
+          @for (fmt of formato; track fmt) {
+            <option [value]="fmt">{{ fmt }}</option>
+          }
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Idioma</label>
+        <input type="text" formControlName="idioma" placeholder="Ej: Inglés" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+      </div>
+    </div>
+
+    <!-- Subtítulos y Clasificación -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Subtítulos</label>
+        <input type="text" formControlName="subtitulos" placeholder="Ej: Español" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Clasificación</label>
+        <input type="text" formControlName="clasificacion" placeholder="Ej: +13, ATP" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+      </div>
+    </div>
+
+    <!-- Portada y Fecha de Estreno -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">URL de la Portada</label>
+        <input type="text" formControlName="portada" placeholder="https://..." class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Fecha de Estreno</label>
+        <input type="date" formControlName="fecha_estreno" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none text-white" />
+      </div>
+    </div>
+
+    <!-- Preventa y Precio -->
+    <div class="flex items-center space-x-4 pt-2">
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" formControlName="es_preventa" id="es_preventa" class="w-4 h-4 text-blue-600 bg-gray-800 border-gray-700 rounded focus:ring-blue-500" />
+        <label for="es_preventa" class="text-sm font-medium cursor-pointer">¿Está en preventa?</label>
+      </div>
+    </div>
+
+    @if (peliculasform.get('es_preventa')?.value) {
+      <div>
+        <label class="block text-sm font-medium mb-1">Precio de Preventa ($)</label>
+        <input type="number" formControlName="precio_preventa" placeholder="7.00" class="w-full p-2.5 rounded bg-gray-800 border border-gray-700 focus:border-blue-500 focus:outline-none" />
+      </div>
+    }
+
+    <!-- Botón Actualizar (Se deshabilita si no hay una peli seleccionada o si está todo vacío) -->
+    <div class="pt-4">
+      <button 
+        type="submit" 
+        [disabled]="!peliculaId || !hayCamposCompletos()" 
+        class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition duration-200">
+        Actualizar Película
+      </button>
+    </div>
+
+  </form>
+</div>

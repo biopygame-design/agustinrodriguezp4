@@ -1,0 +1,65 @@
+/* --- BLOQUE 1: TARJETA DE PELÍCULA --- */
+.card-body {
+  background: linear-gradient(145deg, #18181b, #121212);
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #f4f4f5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-body:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+.card-body h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.card-body img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.card-body p {
+  color: #a1a1aa;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-body strong {
+  color: #f4f4f5;
+}
+
+.horarios-container {
+  margin-top: 1.2rem;
+  border-top: 1px solid #27272a;
+  padding-top: 1rem;
+}
+
+.btn-horario {
+  background-color: #27272a;
+  color: #f4f4f5;
+  border: 1px solid #3f3f46;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-horario:hover {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}

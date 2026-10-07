@@ -1,0 +1,122 @@
+<div class="detalle-container">
+  @if (pelicula(); as p) {
+    <!-- Título de la película -->
+    <h1>{{ p.nombre }}</h1>
+
+    <!-- PUNTUACIÓN PROMEDIO Y ESTRELLAS -->
+    <div class="rating-summary" style="margin-bottom: 15px; font-size: 1.1rem;">
+      <span class="estrellas-promedio">
+        <span class="star-icon" style="color: #ffc107;">&#9733;</span> 
+        <strong>{{ promedioEstrellas() }}</strong> / 5
+      </span>
+      <span class="total-opiniones" style="color: #666; margin-left: 8px;">
+        ({{ totalResenas() }} opiniones)
+      </span>
+    </div>
+
+    <!-- Imagen y datos principales -->
+    <div class="pelicula-contenido">
+      <img [src]="p.portada" [alt]="p.nombre" style="max-width: 300px; border-radius: 8px;">
+      
+      <div class="info-tecnica">
+        <p><strong>Duración:</strong> {{ p.duracion || '90' }} min</p>
+        <p><strong>Formato:</strong> Inglés - 2D / 3D</p>
+      </div>
+    </div>
+
+    <!-- Horarios disponibles (Dinámicos desde Supabase) -->
+    <div class="horarios-seccion" style="margin-top: 20px;">
+      <h3>Horarios disponibles:</h3>
+      <div class="botones-horarios" style="display: flex; gap: 10px; margin-bottom: 15px;">
+        @for (funcion of funcionesDisponibles(); track funcion.id) {
+          <button 
+            (click)="seleccionarHorario(funcion)"
+            [style.background-color]="horarioSeleccionado()?.id === funcion.id ? '#28a745' : '#f8f9fa'"
+            [style.color]="horarioSeleccionado()?.id === funcion.id ? '#fff' : '#000'"
+            style="padding: 8px 16px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">
+            {{ funcion.horario_inicio }}
+          </button>
+        } @empty {
+          <p style="color: #777;">No hay horarios programados para esta película.</p>
+        }
+      </div>
+      
+      <button 
+        (click)="continuarAAsientos()" 
+        [disabled]="!horarioSeleccionado()"
+        style="padding: 10px 20px; font-weight: bold; cursor: pointer;">
+        Continuar a Butacas
+      </button>
+    </div>
+
+    <hr style="margin: 30px 0;">
+
+    <!-- SECCIÓN DE RESEÑAS Y COMENTARIOS -->
+    <section class="seccion-resenas">
+      <h3>Reseñas del público</h3>
+
+      <!-- Formulario para dejar reseña (Solo si está logueado) -->
+      @if (authService.currentUser()) {
+        <div class="form-resena" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <h4>Deja tu calificación</h4>
+          
+          <div style="margin-bottom: 10px;">
+            <label style="margin-right: 10px;">Estrellas:</label>
+            <select [ngModel]="nuevaEstrellas()" (ngModelChange)="nuevaEstrellas.set(+$event)" style="padding: 5px;">
+              <option [value]="5">⭐⭐⭐⭐⭐ (5 Estrellas)</option>
+              <option [value]="4">⭐⭐⭐⭐ (4 Estrellas)</option>
+              <option [value]="3">⭐⭐⭐ (3 Estrellas)</option>
+              <option [value]="2">⭐⭐ (2 Estrellas)</option>
+              <option [value]="1">⭐ (1 Estrella)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 10px;">
+            <textarea 
+              [ngModel]="nuevoComentario()" 
+              (ngModelChange)="nuevoComentario.set($event)"
+              placeholder="Escribe un comentario corto..." 
+              maxlength="250"
+              style="width: 100%; height: 70px; padding: 8px; resize: none;">
+            </textarea>
+          </div>
+
+          <button (click)="enviarResena()" [disabled]="enviando()" style="padding: 8px 15px; cursor: pointer;">
+            Publicar Reseña
+          </button>
+        </div>
+      } @else {
+        <p class="login-aviso" style="font-style: italic; color: #555; margin-bottom: 20px;">
+          Inicia sesión para dejar tu propia reseña y calificación.
+        </p>
+      }
+
+      <!-- Listado de comentarios -->
+      <div class="lista-comentarios" style="display: flex; flex-direction: column; gap: 12px;">
+        @for (r of resenas(); track r.id) {
+          <div class="comentario-card" style="border: 1px solid #e0e0e0; padding: 12px; border-radius: 6px;">
+            <div class="header-comentario" style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <strong>{{ r.usuarios?.nombre }} {{ r.usuarios?.apellido }}</strong>
+              <span class="estrellas" style="color: #ffc107;">
+                @for (s of [1,2,3,4,5]; track s) {
+                  @if (s <= r.estrellas) {
+                    <span>&#9733;</span>
+                  } @else {
+                    <span style="color: #ccc;">&#9733;</span>
+                  }
+                }
+              </span>
+            </div>
+            <p style="margin: 0 0 6px 0;">{{ r.comentario }}</p>
+            <small style="color: #888;">{{ r.created_at | date:'shortDate' }}</small>
+          </div>
+        } @empty {
+          <p style="color: #777;">Aún no hay reseñas para esta película. ¡Sé el primero en opinar!</p>
+        }
+      </div>
+    </section>
+
+  } @else {
+    <p>Cargando información de la película...</p>
+  }
+</div>

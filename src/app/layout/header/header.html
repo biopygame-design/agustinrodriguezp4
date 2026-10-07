@@ -1,0 +1,47 @@
+<header class="navbar">
+  <div class="brand">
+    <h1>🎬 bienvenidos al cine!</h1>
+  </div>
+
+  <!-- Navegación declarativa con routerLink -->
+  <nav class="nav-links">
+    <a routerLink="/inicio" routerLinkActive="active">🏠 Inicio</a>
+    <a routerLink="/about" routerLinkActive="active">ℹ️ Acerca de</a>
+    <a routerLink="/candys" routerLinkActive="active">🍭 candy shop</a>
+    
+    <!-- Enlaces que solo se ven si NO hay usuario logueado -->
+    @if (!authService.currentUserData()) {
+      <a routerLink="/registrarse" routerLinkActive="active">registrarse</a>
+      <a routerLink="/iniciar" routerLinkActive="active">iniciar-sesion</a>
+    }
+
+    
+    <a *appRole="'admin'" routerLink="/crearfuncion" routerLinkActive="active">crearfuncion</a>
+
+   
+    <a *appRole="'empleado'" routerLink="/validar" routerLinkActive="active">validar entrada</a>
+
+    <a routerLink="/preventa" routerLinkActive="active">peliculas_preventas></a>
+    <a routerLink="/carrito" routerLinkActive="active">carrito></a>
+    <a routerLink="/modificarpelicula" routerLinkActive="active">modificarpelicula></a>
+
+    
+    <a *appRole="'admin'" routerLink="/crear-promos" routerLinkActive="active">crear-promos></a>
+
+    <a routerLink="/promos" routerLinkActive="active">promos></a>
+    <a routerLink="/usuario" routerLinkActive="active">usuario></a>
+
+    <a *appRole="'admin'" routerLink="/adminlogs" routerLinkActive="active">admin-logs></a>
+    <a *appRole="'admin'" routerLink="/crearcandy" routerLinkActive="active">crear-candy></a>
+    <a *appRole="'admin'" routerLink="adminestadisticas" routerLinkActive="active">estadisticas></a>
+
+    <button *appRole="'admin'" routerLink="/agregar" class="btn-admin">
+      ➕ Agregar Nueva Película
+    </button>
+    
+    <!-- Botón de Cerrar Sesión que solo se ve si SÍ hay usuario logueado -->
+    @if (authService.currentUserData()) {
+      <a href="#" (click)="logout(); $event.preventDefault()">🚪 Cerrar Sesión</a>
+    }
+  </nav>
+</header>

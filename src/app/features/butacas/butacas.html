@@ -1,0 +1,69 @@
+<div class="container-butacas">
+  <h2>Selecciona tus Butacas</h2>
+  
+  <div class="info-funcion">
+    <p><strong>Formato:</strong> {{ formatoSeleccionado }} | <strong>Horario:</strong> {{ horarioSeleccionado }}</p>
+    <p><strong>Precios:</strong> General ${{ precioUnitario() | number:'1.2-2' }} | VIP (Filas R, S, T) ${{ (precioUnitario() * 1.5) | number:'1.2-2' }}</p>
+  </div>
+
+  <!-- Leyenda de colores -->
+  <div class="leyenda-butacas">
+    <span class="item-leyenda"><span class="bullet libre"></span> Libre</span>
+    <span class="item-leyenda"><span class="bullet vip"></span> VIP</span>
+    <span class="item-leyenda"><span class="bullet discapacitado"></span> Apto Discapacidad</span>
+    <span class="item-leyenda"><span class="bullet seleccionada"></span> Seleccionada</span>
+    <span class="item-leyenda"><span class="bullet ocupada"></span> Ocupada</span>
+  </div>
+
+  <!-- Pantalla del cine -->
+  <div class="pantalla-cine">PANTALLA</div>
+
+  <!-- Grilla de Butacas Ordenada por Filas -->
+  <div class="grid-butacas-ordenada">
+    @for (grupo of butacasAgrupadas(); track grupo[0]) {
+      <div class="fila-cine">
+        <!-- Letra indicadora de la fila a la izquierda -->
+        <span class="letra-fila">{{ grupo[0] }}</span>
+
+        <!-- Contenedor de los asientos de esta fila -->
+        <div class="asientos-fila">
+          @for (butaca of grupo[1]; track butaca.id) {
+            <button 
+              class="butaca"
+              [class.libre]="butaca.estado === 'libre' && !esSeleccionada(butaca.id)"
+              [class.seleccionada]="esSeleccionada(butaca.id)"
+              [class.ocupada]="butaca.estado === 'ocupada'"
+              [class.vip]="butaca.tipo === 'vip'"
+              [class.discapacitado]="butaca.tipo === 'discapacitado'"
+              [disabled]="butaca.estado === 'ocupada'"
+              (click)="seleccionarButaca(butaca)">
+              {{ butaca.numero }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Resumen de Compra -->
+  <div class="resumen-compra">
+    <h3>Resumen</h3>
+    <p>Butacas seleccionadas: {{ butacasSeleccionadasList().length }}</p>
+    <p>Subtotal: ${{ subtotal() | number:'1.2-2' }}</p>
+    
+    @if (authService.tieneDescuentoPrimeraCompra) {
+      <p class="descuento-texto">¡Descuento de primera compra (20%): -${{ descuento() | number:'1.2-2' }}</p>
+    }
+
+    <h2>Total Final: ${{ totalFinal() | number:'1.2-2' }}</h2>
+
+    <!-- BOTÓN DE AGREGAR AL CARRITO -->
+    <button 
+      class="btn-comprar" 
+      [disabled]="butacasSeleccionadasList().length === 0"
+      (click)="agregarAlCarrito()">
+      🛒 Agregar al Carrito
+    </button>
+  </div>
+
+</div>

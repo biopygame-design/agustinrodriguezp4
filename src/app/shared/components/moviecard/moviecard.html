@@ -1,0 +1,15 @@
+<div class="card-body">
+    <h2 (click)="verDetalles()" style="cursor: pointer; color: #007bff;">{{ pelicula().nombre }}</h2>
+    
+    <img [src]="pelicula().portada" [alt]="pelicula().nombre">
+    
+    <p><strong>Duración:</strong> {{ pelicula().duracion }} min</p>
+    <p><strong>Género:</strong> {{ pelicula().genero }}</p>
+    <p><strong>Idioma y Formato:</strong> {{ pelicula().idioma }} - {{ pelicula().formato }}</p>
+    
+    <!-- Recorremos dinámicamente los horarios de la base de datos -->
+    <div class="horarios-container">
+        
+       
+    </div>
+</div>
